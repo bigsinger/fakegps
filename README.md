@@ -15,6 +15,6 @@ How to use :
 - Open app and select a new place.
 - Reboot .
 
-![]()
+![](https://github.com/bigsinger/fakegps/blob/master/screenshot/1.png)
 
-![]()
+![](https://github.com/bigsinger/fakegps/blob/master/screenshot/2.png)
