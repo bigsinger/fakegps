@@ -6,11 +6,7 @@ android {
         debug {
         }
         release {
-            // 自己的签名文件
-            storeFile file("sign.keystore")
-            storePassword "bigsing"
-            keyAlias "sing"
-            keyPassword "bigsing"
+            
         }
     }
     compileSdkVersion 24
