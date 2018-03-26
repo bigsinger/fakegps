@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">模拟位置</string>
+    <string name="app_desc">修改地理位置模拟坐标</string>
+    <string name="ok">确定</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
+
+    <string name="header_name">模拟位置</string>
+    <string name="header_desc">修改地理位置模拟坐标</string>
+    <string name="url_home">https://github.com/bigsinger/fakegps</string>
+
+    <string name="menu_home">首页</string>
+    <string name="menu_recommend">推荐</string>
+    <string name="menu_theme">主题</string>
+    <string name="menu_help">帮助</string>
+    <string name="menu_other">其他</string>
+    <string name="menu_setting">设置</string>
+    <string name="menu_about">关于</string>
+
+    <string name="title_select_theme">主题选择</string>
+
+
+    <string name="xpose_actived">当前模块已激活</string>
+    <string name="xpose_not_actived">当前模块未在XPOSED中激活</string>
+    <string name="xpose_please_active">请参考使用帮助先激活模块</string>
+
+    <string name="tip_already_saved">已保存</string>
+
+
+</resources>

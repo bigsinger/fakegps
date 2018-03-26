@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Fake GPS</string>
+    <string name="app_desc">Change Map Location</string>
+    <string name="ok">OK</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <string name="header_name">Fake GPS</string>
+    <string name="header_desc">Change and Fake My GPS</string>
+    <string name="url_home">https://github.com/bigsinger/fakegps</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_recommend">Recommend</string>
+    <string name="menu_theme">Theme</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_other">Other</string>
+    <string name="menu_setting">Setting</string>
+    <string name="menu_about">About</string>
+
+    <string name="title_select_theme">Select Theme</string>
+
+    <string name="xpose_actived">This module is activated!</string>
+    <string name="xpose_not_actived">This module not activated!</string>
+    <string name="xpose_please_active">Please active this module refer to the help!</string>
+
+    <string name="tip_already_saved">already saved!</string>
+</resources>
