@@ -85,7 +85,7 @@ How to use :
 */
 
 
-public class MapBaiduActivity extends BaseActivity implements OnGetPoiSearchResultListener {
+public class MapBaiduActivity extends MyMapActivity implements OnGetPoiSearchResultListener {
     public static final String TAG = "MapBaiduActivity";
 
     private final static int INTERVEL = 200;
@@ -386,11 +386,11 @@ public class MapBaiduActivity extends BaseActivity implements OnGetPoiSearchResu
         });
     }
 
-    private void showPositionInfo(final LatLng latLng, String posName) {
+    protected void showPositionInfo(final LatLng latLng, String posName) {
         updatePosition(latLng, false);
 
         //保存地图选点并返回
-        AlertDialog.Builder builder = new AlertDialog.Builder(MapBaiduActivity.this, R.style.MyThemeGray);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyThemeGray);
         builder.setTitle(posName);
         builder.setMessage(latLng.toString());
         builder.setNegativeButton("取消", null);
@@ -412,8 +412,7 @@ public class MapBaiduActivity extends BaseActivity implements OnGetPoiSearchResu
         builder.create().show();
     }
 
-
-    private void updatePosition(LatLng latLng, boolean reCenter) {
+    protected void updatePosition(LatLng latLng, boolean reCenter) {
         mBaiduMap.clear();
 
         // 只是完成了定位

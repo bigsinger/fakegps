@@ -1,7 +1,11 @@
 package com.bigsing.fakemap;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.CompoundButton;
 
@@ -10,8 +14,12 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MyLocationStyle;
+import com.bigsing.fakemap.utils.MapConvert;
+import com.bigsing.fakemap.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +44,7 @@ How to use :
 */
 
 
-public class MapGaodeActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener
+public class MapGaodeActivity extends MyMapActivity implements CompoundButton.OnCheckedChangeListener
         , AMapLocationListener, LocationSource {
     public static final String TAG = "MapGaodeActivity";
     private com.amap.api.maps2d.MapView mapView;
@@ -69,14 +77,35 @@ public class MapGaodeActivity extends BaseActivity implements CompoundButton.OnC
         locationStyle.strokeWidth(5);
         aMap.setMyLocationStyle(locationStyle);
 
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(12));
+
         // 设置定位监听
         aMap.setLocationSource(this);
+        aMap.getUiSettings().setScaleControlsEnabled(true);
         aMap.getUiSettings().setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         // 设置定位的类型为定位模式，参见类AMap。
         //aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
         // 设置为true表示系统定位按钮显示并响应点击，false表示隐藏，默认是false
         aMap.setMyLocationEnabled(true);
+
+        // 点击地图的时候，地图选点
+        aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+//                aMap.animateCamera(CameraUpdateFactory.changeLatLng(latLng));
+                //设置中心点和缩放比例
+                aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+            }
+        });
+
+        // 长按选定
+        aMap.setOnMapLongClickListener(new AMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                showPositionInfo(latLng, "");
+            }
+        });
 
         aMapLocationClient = new AMapLocationClient(getApplicationContext());
         aMapLocationClient.setLocationListener(this);
@@ -99,6 +128,37 @@ public class MapGaodeActivity extends BaseActivity implements CompoundButton.OnC
         aMapLocationClient.setLocationOption(aMapLocationClientOption);
         //启动定位
         aMapLocationClient.startLocation();
+    }
+
+
+
+    protected void showPositionInfo(final LatLng latLng, String posName) {
+        updatePosition(latLng, false);
+
+        //保存地图选点并返回
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyThemeGray);
+        builder.setTitle(posName);
+        builder.setMessage(latLng.toString());
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                LatLng desLatLng = MapConvert.convertBaiduToGPS(latLng);
+                SharedPreferences preferences = getSharedPreferences(Constant.TAG, Context.MODE_WORLD_READABLE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("baidulatitude", latLng.latitude + "");
+                editor.putString("baidulongitude", latLng.longitude + "");
+//                editor.putString("latitude", desLatLng.latitude + "");
+//                editor.putString("longitude", desLatLng.longitude + "");
+                editor.commit();
+                //MapBaiduActivity.this.finish();
+                Utils.toast("地图位置已刷新~");
+            }
+        });
+        builder.create().show();
+    }
+
+    protected void updatePosition(LatLng latLng, boolean reCenter) {
     }
 
     /**
