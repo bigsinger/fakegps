@@ -340,6 +340,10 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
 
 
         mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
+            @Override
+            public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
+
+            }
 
             @Override
             public void onMapStatusChangeStart(MapStatus arg0) {
@@ -542,10 +546,6 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
             mLocationClient.unRegisterLocationListener(myListener);
         }
 
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
-
-        }
     }
 
     /**
