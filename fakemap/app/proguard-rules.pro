@@ -27,9 +27,30 @@
 -dontwarn android.support.v7.*
 -ignorewarnings
 
+######################百度地图################################
 -keep class com.baidu.** {*;}
 -keep class vi.com.** {*;}
 -dontwarn com.baidu.**
+##############################################################
+
+#####################高德地图#################################
+#定位
+-keep class com.amap.api.location.**{*;}
+-keep class com.amap.api.fence.**{*;}
+-keep class com.autonavi.aps.amapapi.model.**{*;}
+
+#搜索
+-keep   class com.amap.api.services.**{*;}
+
+#2D地图
+-keep class com.amap.api.maps2d.**{*;}
+-keep class com.amap.api.mapcore2d.**{*;}
+
+#导航
+-keep class com.amap.api.navi.**{*;}
+-keep class com.autonavi.**{*;}
+##############################################################
+
 
 #make mapping unique
 -keepattributes SourceFile,LineNumberTable
