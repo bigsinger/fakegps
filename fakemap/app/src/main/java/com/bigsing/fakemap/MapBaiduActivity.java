@@ -52,7 +52,6 @@ import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
-import com.baidu.mapapi.utils.CoordinateConverter;
 import com.bigsing.fakemap.adapter.EasyRecyclerViewAdapter;
 import com.bigsing.fakemap.adapter.ThemeColorAdapter;
 import com.bigsing.fakemap.utils.ActivityCollector;
@@ -61,7 +60,6 @@ import com.bigsing.fakemap.utils.ThemeColor;
 import com.bigsing.fakemap.utils.ThemeUtils;
 import com.bigsing.fakemap.utils.Utils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -87,8 +85,8 @@ How to use :
 */
 
 
-public class MainActivity extends BaseActivity implements OnGetPoiSearchResultListener {
-    public static final String TAG = "MainActivity";
+public class MapBaiduActivity extends BaseActivity implements OnGetPoiSearchResultListener {
+    public static final String TAG = "MapBaiduActivity";
 
     private final static int INTERVEL = 200;
     //private GeoCoder mSearch;
@@ -134,6 +132,7 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
         SDKInitializer.initialize(getApplicationContext());
 
         setContentView(R.layout.activity_main);
+
         //获取地图控件引用
         mMapView = (MapView) findViewById(R.id.bmapView);
 
@@ -235,7 +234,7 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
             // 当搜索内容改变时触发该方法
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (!TextUtils.isEmpty(newText)){
+                if (!TextUtils.isEmpty(newText)) {
 //                    mListView.setFilterText(newText);
 //                }else{
 //                    mListView.clearTextFilter();
@@ -251,7 +250,7 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((boolean) btn_search.getTag()== true) {
+                if ((boolean) btn_search.getTag() == true) {
                     btn_search.setTag(false);
                     btn_search.setImageResource(R.drawable.ic_navigation_white_24dp);
                 } else {
@@ -391,7 +390,7 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
         updatePosition(latLng, false);
 
         //保存地图选点并返回
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.MyThemeGray);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MapBaiduActivity.this, R.style.MyThemeGray);
         builder.setTitle(posName);
         builder.setMessage(latLng.toString());
         builder.setNegativeButton("取消", null);
@@ -406,7 +405,7 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
                 editor.putString("latitude", desLatLng.latitude + "");
                 editor.putString("longitude", desLatLng.longitude + "");
                 editor.commit();
-                //MainActivity.this.finish();
+                //MapBaiduActivity.this.finish();
                 Utils.toast("地图位置已刷新~");
             }
         });
@@ -517,37 +516,6 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
         }
     }
 
-
-    class MyLocationListener implements BDLocationListener {
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (location == null) {
-                Toast.makeText(getApplicationContext(), "获取位置信息失败", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            mLastCity = location.getCity();
-            // 只是完成了定位
-            MyLocationData locData = new MyLocationData.Builder().latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-
-            //设置图标在地图上的位置
-            mBaiduMap.setMyLocationData(locData);
-
-
-            // 开始移动百度地图的定位地点到中心位置
-            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16.0f);
-            mBaiduMap.animateMapStatus(u);
-
-            //定位成功后关闭定位
-            mLocationClient.stop();
-            //取消监听函数。
-            mLocationClient.unRegisterLocationListener(myListener);
-        }
-
-    }
-
     /**
      * 设置NavigationView中menu的item被选中后要执行的操作
      *
@@ -562,14 +530,14 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
                     case R.id.nav_menu_recommend:
                     case R.id.nav_menu_help:
                     case R.id.nav_menu_about:
-                        Utils.openUrl(MainActivity.this, getString(R.string.url_home));
+                        Utils.openUrl(MapBaiduActivity.this, getString(R.string.url_home));
                         break;
                     case R.id.nav_menu_theme:
-                        View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_theme_color, null, false);
+                        View view = LayoutInflater.from(MapBaiduActivity.this).inflate(R.layout.dialog_theme_color, null, false);
                         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.theme_recycler_view);
-                        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 4));
+                        recyclerView.setLayoutManager(new GridLayoutManager(MapBaiduActivity.this, 4));
                         recyclerView.setAdapter(themeColorAdapter);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MapBaiduActivity.this);
                         builder.setTitle(R.string.title_select_theme)
                                 .setView(view)
                                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -594,7 +562,7 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
                 // Menu item点击后选中，并关闭Drawerlayout
                 menuItem.setChecked(true);
                 //drawerlayoutHome.closeDrawers();
-                // Toast.makeText(MainActivity.this,msgString,Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MapBaiduActivity.this,msgString,Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -633,7 +601,7 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
 
         //这里不弹框提示了，这样本APP还可以作为普通查看设备信息的工具使用
         if (false) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.MyThemeGray);
+            AlertDialog.Builder builder = new AlertDialog.Builder(MapBaiduActivity.this, R.style.MyThemeGray);
             builder.setTitle(R.string.xpose_not_actived)
                     .setMessage(R.string.xpose_please_active)
                     .setIcon(R.mipmap.ic_launcher)
@@ -643,6 +611,36 @@ public class MainActivity extends BaseActivity implements OnGetPoiSearchResultLi
                         }
                     })
                     .show();
+        }
+
+    }
+
+    class MyLocationListener implements BDLocationListener {
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            if (location == null) {
+                Toast.makeText(getApplicationContext(), "获取位置信息失败", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            mLastCity = location.getCity();
+            // 只是完成了定位
+            MyLocationData locData = new MyLocationData.Builder().latitude(location.getLatitude())
+                    .longitude(location.getLongitude()).build();
+
+            //设置图标在地图上的位置
+            mBaiduMap.setMyLocationData(locData);
+
+
+            // 开始移动百度地图的定位地点到中心位置
+            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16.0f);
+            mBaiduMap.animateMapStatus(u);
+
+            //定位成功后关闭定位
+            mLocationClient.stop();
+            //取消监听函数。
+            mLocationClient.unRegisterLocationListener(myListener);
         }
 
     }

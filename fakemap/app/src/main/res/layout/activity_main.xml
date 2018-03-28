@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".MapBaiduActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
-        <include layout="@layout/layout_content_main" />
+        <include layout="@layout/layout_content_gaodemap" />
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
