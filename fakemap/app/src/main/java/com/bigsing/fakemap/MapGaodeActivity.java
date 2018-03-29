@@ -3,6 +3,7 @@ package com.bigsing.fakemap;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +17,10 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.model.BitmapDescriptor;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
 import com.bigsing.fakemap.utils.MapConvert;
 import com.bigsing.fakemap.utils.Utils;
@@ -54,6 +58,9 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
     private LocationSource.OnLocationChangedListener listener;
     //定位参数设置
     private AMapLocationClientOption aMapLocationClientOption;
+
+    private double lat;
+    private double lon;
 
     @Override
     public String setActName() {
@@ -93,9 +100,15 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
         aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-//                aMap.animateCamera(CameraUpdateFactory.changeLatLng(latLng));
-                //设置中心点和缩放比例
-                aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+                // 设置当前地图显示为当前位置
+//                aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title("当前位置");
+                markerOptions.visible(true);
+                aMap.getMapScreenMarkers().clear();
+                aMap.addMarker(markerOptions);
             }
         });
 
@@ -117,7 +130,7 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
         //设置是否返回地址信息（默认返回地址信息）
         aMapLocationClientOption.setNeedAddress(true);
         //设置是否只定位一次,默认为false
-        aMapLocationClientOption.setOnceLocation(false);
+        aMapLocationClientOption.setOnceLocation(true);
         //设置是否强制刷新WIFI，默认为强制刷新
         aMapLocationClientOption.setWifiActiveScan(true);
         //设置是否允许模拟位置,默认为false，不允许模拟位置
@@ -131,6 +144,15 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
     }
 
 
+    @Override
+    protected void doSearchInCity(String cityName) {
+
+    }
+
+    @Override
+    protected void doRequestLocation() {
+
+    }
 
     protected void showPositionInfo(final LatLng latLng, String posName) {
         updatePosition(latLng, false);
@@ -187,6 +209,14 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
                 aMapLocation.getRoad();//街道信息
                 aMapLocation.getCityCode();//城市编码
                 aMapLocation.getAdCode();//地区编码
+
+//                lat = aMapLocation.getLatitude();
+//                lon = aMapLocation.getLongitude();
+//                Log.v("pcw", "lat : " + lat + " lon : " + lon);
+//                Log.v("pcw", "Country : " + aMapLocation.getCountry() + " province : " + aMapLocation.getProvince() + " City : " + aMapLocation.getCity() + " District : " + aMapLocation.getDistrict());
+
+
+
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("Tomato", "location Error, ErrCode:"
@@ -229,13 +259,10 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
         mapView.onPause();
     }
 
-    /**
-     * 方法必须重写
-     */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+    protected void onStop() {
+        super.onStop();
+        aMapLocationClient.stopLocation();//停止定位
     }
 
     /**
@@ -252,6 +279,15 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
             aMapLocationClientOption = null;
         }
     }
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
 
 }
 
