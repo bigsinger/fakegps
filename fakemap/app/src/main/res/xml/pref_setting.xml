@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings">
+        <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="googlemap"
+        android:title="Google Map" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="gaodemap"
+            android:title="Gaode Map" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="tecentmap"
+            android:title="Tecent Map" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="baidumap"
+            android:title="Baidu Map" />
+    </PreferenceCategory>
+</PreferenceScreen>

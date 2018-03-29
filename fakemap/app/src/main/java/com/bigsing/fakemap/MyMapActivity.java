@@ -3,6 +3,7 @@ package com.bigsing.fakemap;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -280,6 +281,9 @@ public abstract class MyMapActivity extends BaseActivity {
                     case R.id.nav_menu_help:
                     case R.id.nav_menu_about:
                         Utils.openUrl(MyMapActivity.this, getString(R.string.url_home));
+                        break;
+                    case R.id.nav_menu_setting:
+                        startActivity(new Intent(MyMapActivity.this, SettingActivity.class));
                         break;
                     case R.id.nav_menu_theme:
                         View view = LayoutInflater.from(MyMapActivity.this).inflate(R.layout.dialog_theme_color, null, false);

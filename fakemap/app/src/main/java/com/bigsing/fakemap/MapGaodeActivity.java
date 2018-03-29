@@ -69,21 +69,12 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
     //定位参数设置
     private AMapLocationClientOption aMapLocationClientOption;
     private PopupWindow popupWindow;
-    private List<LocationInfo> mList;
+    private List<LocationInfo> mPoiList;
     private LocateRecyclerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mList = new ArrayList<>();
-        mAdapter = new LocateRecyclerAdapter(this, mList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        mLocateRecycler = (RecyclerView) findViewById(R.id.locate_recycler);
-//        mLocateRecycler.setLayoutManager(layoutManager);
-//        mLocateRecycler.setAdapter(mAdapter);
-        mAdapter.setLocationItemClick(this);
-
 
         mapView = (com.amap.api.maps2d.MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);  //必须写
@@ -191,7 +182,8 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
 
     @Override
     public void onPoiSearched(PoiResult result, int i) {
-        PoiSearch.Query query = result.getQuery();
+        mPoiList = new ArrayList<>();
+//        PoiSearch.Query query = result.getQuery();
         ArrayList<PoiItem> pois = result.getPois();
         for (PoiItem poi : pois) {
             String name = poi.getCityName();
@@ -202,7 +194,7 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
 
             info.setLatitude(point.getLatitude());
             info.setLonTitude(point.getLongitude());
-            mList.add(info);
+            mPoiList.add(info);
             Log.d("onPoiSearched: ", snippet);
         }
 
@@ -216,7 +208,7 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new LocateRecyclerAdapter(this, mList);
+        mAdapter = new LocateRecyclerAdapter(this, mPoiList);
         mAdapter.setLocationItemClick(this);
         recyclerView.setAdapter(mAdapter);
         popupWindow = new PopupWindow(mToolbar, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

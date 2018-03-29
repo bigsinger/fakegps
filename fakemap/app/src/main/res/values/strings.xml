@@ -24,4 +24,7 @@
     <string name="xpose_please_active">Please active this module refer to the help!</string>
 
     <string name="tip_already_saved">already saved!</string>
+    <string name="settings">Settings</string>
+
+
 </resources>
