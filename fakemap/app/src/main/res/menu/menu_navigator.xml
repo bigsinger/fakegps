@@ -3,17 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_menu_home"
-            android:icon="@drawable/home"
-            android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_menu_recommend"
-            android:icon="@drawable/recomend"
-            android:title="@string/menu_recommend" />
+            android:id="@+id/nav_menu_check"
+            android:icon="@drawable/update"
+            android:title="@string/menu_check" />
         <item
             android:id="@+id/nav_menu_theme"
             android:icon="@drawable/theme"
             android:title="@string/menu_theme" />
+        <item
+            android:id="@+id/nav_menu_recommend"
+            android:icon="@drawable/recomend"
+            android:title="@string/menu_recommend" />下
         <item
             android:id="@+id/nav_menu_help"
             android:icon="@drawable/help"

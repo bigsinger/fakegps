@@ -8,7 +8,12 @@
     <string name="header_name">Fake GPS</string>
     <string name="header_desc">Change and Fake My GPS</string>
     <string name="url_home">https://github.com/bigsinger/fakegps</string>
+    <string name="checkingupgrade">Checking Upgrade, Wait a moment...</string>
+    <string name="checkingupgradefailed">Checking Upgrade Failed. Please try again later</string>
+    <string name="versionislatest">The version is latest!</string>
 
+
+    <string name="menu_check">Check Upgrade</string>
     <string name="menu_home">Home</string>
     <string name="menu_recommend">Recommend</string>
     <string name="menu_theme">Theme</string>

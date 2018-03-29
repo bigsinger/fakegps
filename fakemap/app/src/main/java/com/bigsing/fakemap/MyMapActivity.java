@@ -32,6 +32,7 @@ import com.bigsing.fakemap.utils.ActivityCollector;
 import com.bigsing.fakemap.utils.ThemeColor;
 import com.bigsing.fakemap.utils.ThemeUtils;
 import com.bigsing.fakemap.utils.Utils;
+import com.tencent.bugly.beta.Beta;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -276,7 +277,13 @@ public abstract class MyMapActivity extends BaseActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.nav_menu_home:
+                    case R.id.nav_menu_check:
+                        /***** 检查更新 *****/
+                        Beta.strToastYourAreTheLatestVersion = getString(R.string.versionislatest);
+                        Beta.strToastCheckUpgradeError = getString(R.string.checkingupgradefailed);
+                        Beta.strToastCheckingUpgrade = getString(R.string.checkingupgrade);
+                        Beta.checkUpgrade();
+                        break;
                     case R.id.nav_menu_recommend:
                     case R.id.nav_menu_help:
                     case R.id.nav_menu_about:

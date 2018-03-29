@@ -9,6 +9,11 @@
     <string name="header_desc">修改地理位置模拟坐标</string>
     <string name="url_home">https://github.com/bigsinger/fakegps</string>
 
+    <string name="checkingupgrade">正在检查，请稍候...</string>
+    <string name="checkingupgradefailed">检查新版本失败，请稍后重试</string>
+    <string name="versionislatest">你已经是最新版了</string>
+
+    <string name="menu_check">检查更新</string>
     <string name="menu_home">首页</string>
     <string name="menu_recommend">推荐</string>
     <string name="menu_theme">主题</string>
