@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import com.bigsing.fakemap.R;
 import com.bigsing.fakemap.utils.ThemeColor;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 /**
  * Created by sing on 2017/4/19.
  */
@@ -46,12 +44,12 @@ public class ThemeColorAdapter extends EasyRecyclerViewAdapter<ThemeColor> {
     }
 
     class ThemeColorViewHolder extends EasyViewHolder {
-        CircleImageView them_color;
+        ImageView them_color;
         ImageView chosen;
 
         public ThemeColorViewHolder(View itemView) {
             super(itemView);
-            them_color = (CircleImageView) itemView.findViewById(R.id.them_color);
+            them_color = (ImageView) itemView.findViewById(R.id.them_color);
             chosen = (ImageView) itemView.findViewById(R.id.choose);
         }
     }

@@ -31,7 +31,7 @@
                     android:layout_weight="10"
                     android:queryHint="请输入搜索内容" />
                 <ImageView
-                    android:id="@+id/btn_search"
+                    android:id="@+id/btn_autoLocate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"

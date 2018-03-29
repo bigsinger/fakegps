@@ -22,7 +22,7 @@
         android:layout_above="@id/appdescTextView"
         android:text="@string/header_name" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/sdv_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"

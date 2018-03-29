@@ -4,30 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -52,18 +36,8 @@ import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
-import com.bigsing.fakemap.adapter.EasyRecyclerViewAdapter;
-import com.bigsing.fakemap.adapter.ThemeColorAdapter;
-import com.bigsing.fakemap.utils.ActivityCollector;
 import com.bigsing.fakemap.utils.MapConvert;
-import com.bigsing.fakemap.utils.ThemeColor;
-import com.bigsing.fakemap.utils.ThemeUtils;
 import com.bigsing.fakemap.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.Locale;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /*
 - 模拟定位虚拟坐标位置，使用百度地图SDK选择地图坐标。可以伪装任意位置，对微信,QQ,陌陌等众多软件有效。
@@ -88,8 +62,6 @@ How to use :
 public class MapBaiduActivity extends MyMapActivity implements OnGetPoiSearchResultListener {
     public static final String TAG = "MapBaiduActivity";
 
-    private final static int INTERVEL = 200;
-    //private GeoCoder mSearch;
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
     private LocationManager mLocationManager;
@@ -98,7 +70,6 @@ public class MapBaiduActivity extends MyMapActivity implements OnGetPoiSearchRes
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
     private PoiSearch mPoiSearch = null;
-
 
 
     @Override
@@ -256,15 +227,7 @@ public class MapBaiduActivity extends MyMapActivity implements OnGetPoiSearchRes
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 LatLng desLatLng = MapConvert.convertBaiduToGPS(latLng);
-                SharedPreferences preferences = getSharedPreferences(Constant.TAG, Context.MODE_WORLD_READABLE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("baidulatitude", latLng.latitude + "");
-                editor.putString("baidulongitude", latLng.longitude + "");
-                editor.putString("latitude", desLatLng.latitude + "");
-                editor.putString("longitude", desLatLng.longitude + "");
-                editor.commit();
-                //MapBaiduActivity.this.finish();
-                Utils.toast("地图位置已刷新~");
+                saveFakeLocation(MapBaiduActivity.this, desLatLng.latitude, desLatLng.longitude);
             }
         });
         builder.create().show();
@@ -294,10 +257,6 @@ public class MapBaiduActivity extends MyMapActivity implements OnGetPoiSearchRes
             MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(latLng, 16);
             mBaiduMap.animateMapStatus(u);
         }
-
-//        mBaiduMap.addOverlay(new MarkerOptions().position(latLng)
-//                .icon(BitmapDescriptorFactory
-//                .fromResource(R.drawable.icon_mark)));
     }
 
     @Override

@@ -3,12 +3,18 @@ package com.bigsing.fakemap;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.PopupWindow;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -17,16 +23,19 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
-import com.amap.api.maps2d.model.BitmapDescriptor;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
-import com.bigsing.fakemap.utils.MapConvert;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.bigsing.fakemap.utils.Utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /*
 - 模拟定位虚拟坐标位置，使用百度地图SDK选择地图坐标。可以伪装任意位置，对微信,QQ,陌陌等众多软件有效。
@@ -49,8 +58,9 @@ How to use :
 
 
 public class MapGaodeActivity extends MyMapActivity implements CompoundButton.OnCheckedChangeListener
-        , AMapLocationListener, LocationSource {
+        , LocateRecyclerAdapter.OnLocationItemClick, AMapLocationListener, PoiSearch.OnPoiSearchListener, LocationSource {
     public static final String TAG = "MapGaodeActivity";
+    RecyclerView mLocateRecycler;
     private com.amap.api.maps2d.MapView mapView;
     private com.amap.api.maps2d.AMap aMap;
     //定位服务类。此类提供单次定位、持续定位、地理围栏、最后位置相关功能
@@ -58,19 +68,22 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
     private LocationSource.OnLocationChangedListener listener;
     //定位参数设置
     private AMapLocationClientOption aMapLocationClientOption;
-
-    private double lat;
-    private double lon;
-
-    @Override
-    public String setActName() {
-        return TAG;
-    }
+    private PopupWindow popupWindow;
+    private List<LocationInfo> mList;
+    private LocateRecyclerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        mList = new ArrayList<>();
+        mAdapter = new LocateRecyclerAdapter(this, mList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+//        mLocateRecycler = (RecyclerView) findViewById(R.id.locate_recycler);
+//        mLocateRecycler.setLayoutManager(layoutManager);
+//        mLocateRecycler.setAdapter(mAdapter);
+        mAdapter.setLocationItemClick(this);
+
 
         mapView = (com.amap.api.maps2d.MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);  //必须写
@@ -109,6 +122,14 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
                 markerOptions.visible(true);
                 aMap.getMapScreenMarkers().clear();
                 aMap.addMarker(markerOptions);
+
+
+                PoiSearch.Query query = new PoiSearch.Query("", "", "");
+                query.setPageSize(20);
+                PoiSearch search = new PoiSearch(MapGaodeActivity.this, query);
+                search.setBound(new PoiSearch.SearchBound(new LatLonPoint(latLng.latitude, latLng.longitude), 10000));
+                search.setOnPoiSearchListener(MapGaodeActivity.this);
+                search.searchPOIAsyn();
             }
         });
 
@@ -143,6 +164,20 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
         aMapLocationClient.startLocation();
     }
 
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
+    }
+
+    @Override
+    public void OnLocationClick(RecyclerView parent, View view, int position, LocationInfo info) {
+        Log.d(TAG, String.format("选择了：%02d la: %f lo: %f %s", position, info.getLatitude(), info.getLonTitude(), info.getAddress()));
+        if (popupWindow != null) {
+            popupWindow.dismiss();
+        }
+        saveFakeLocation(MapGaodeActivity.this, info.getLatitude(), info.getLonTitude());
+    }
+
 
     @Override
     protected void doSearchInCity(String cityName) {
@@ -152,6 +187,45 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
     @Override
     protected void doRequestLocation() {
 
+    }
+
+    @Override
+    public void onPoiSearched(PoiResult result, int i) {
+        PoiSearch.Query query = result.getQuery();
+        ArrayList<PoiItem> pois = result.getPois();
+        for (PoiItem poi : pois) {
+            String name = poi.getCityName();
+            String snippet = poi.getSnippet();
+            LocationInfo info = new LocationInfo();
+            info.setAddress(snippet);
+            LatLonPoint point = poi.getLatLonPoint();
+
+            info.setLatitude(point.getLatitude());
+            info.setLonTitude(point.getLongitude());
+            mList.add(info);
+            Log.d("onPoiSearched: ", snippet);
+        }
+
+        showPopupWindow();
+//        mAdapter.notifyDataSetChanged();
+    }
+
+    private void showPopupWindow() {
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.popupwindow, null);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.locate_recycler);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        mAdapter = new LocateRecyclerAdapter(this, mList);
+        mAdapter.setLocationItemClick(this);
+        recyclerView.setAdapter(mAdapter);
+        popupWindow = new PopupWindow(mToolbar, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(view);
+        popupWindow.setFocusable(true);
+        popupWindow.showAsDropDown(btn_autoLocate);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setTouchable(true);
     }
 
     protected void showPositionInfo(final LatLng latLng, String posName) {
@@ -216,7 +290,6 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
 //                Log.v("pcw", "Country : " + aMapLocation.getCountry() + " province : " + aMapLocation.getProvince() + " City : " + aMapLocation.getCity() + " District : " + aMapLocation.getDistrict());
 
 
-
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("Tomato", "location Error, ErrCode:"
@@ -279,6 +352,7 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
             aMapLocationClientOption = null;
         }
     }
+
     /**
      * 方法必须重写
      */

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_margin="1dp"
+    android:layout_width="match_parent"
+    android:layout_height="45dp">
+
+    <TextView
+        android:id="@+id/locate_info_adress"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="北京"
+        android:gravity="center"
+        android:layout_weight="1"/>
+    <View
+        android:layout_width="match_parent"
+        android:background="#e7e4e4"
+        android:layout_height="1.5dp"/>
+</LinearLayout>
