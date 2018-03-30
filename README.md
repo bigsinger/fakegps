@@ -1,18 +1,18 @@
-- Ä£Äâ¶¨Î»ĞéÄâ×ø±êÎ»ÖÃ£¬Ê¹ÓÃ°Ù¶ÈµØÍ¼SDKÑ¡ÔñµØÍ¼×ø±ê¡£¿ÉÒÔÎ±×°ÈÎÒâÎ»ÖÃ£¬¶ÔÎ¢ĞÅ,QQ,Ä°Ä°µÈÖÚ¶àÈí¼şÓĞĞ§¡£
+æ¨¡æ‹Ÿå®šä½è™šæ‹Ÿåæ ‡ä½ç½®ï¼Œä½¿ç”¨ç™¾åº¦åœ°å›¾SDKé€‰æ‹©åœ°å›¾åæ ‡ã€‚å¯ä»¥ä¼ªè£…ä»»æ„ä½ç½®ï¼Œå¯¹å¾®ä¿¡,QQ,é™Œé™Œç­‰ä¼—å¤šè½¯ä»¶æœ‰æ•ˆã€‚
 
-Ê¹ÓÃ·½·¨£º
-- °²×°APP
-- ÔÚXposed¿ò¼ÜÖĞÆôÓÃ±¾Ä£¿é
-- ÖØÆôÊÖ»ú
-- Ëæ±ãÑ¡ÔñÒ»¸öµØÍ¼POI×ø±ê
+### ä½¿ç”¨æ–¹æ³•ï¼š
+- å®‰è£…APP
+- åœ¨Xposedæ¡†æ¶ä¸­å¯ç”¨æœ¬æ¨¡å—
+- é‡å¯æ‰‹æœº
+- éšä¾¿é€‰æ‹©ä¸€ä¸ªåœ°å›¾åæ ‡ï¼Œã€**é•¿æŒ‰ä¿å­˜åæ ‡**ã€‘ï¼Œå³å¯ç”Ÿæ•ˆã€‚
 
 
 - Fake My GPS allows you to select a custom GPS location that will be seen by apps of your choosing.
 
-How to use :
+### How to use :
 - Install app.
 - Enable module in xposed framework.
-- Open app and select a new place.
+- Open app and select a new place.**Long Click Map To Saving point**.
 - Reboot .
 
 ![](https://github.com/bigsinger/fakegps/blob/master/screenshot/1.png)
