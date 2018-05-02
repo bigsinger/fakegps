@@ -24,7 +24,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        mSP = getSharedPreferences(Constant.TAG, MODE_WORLD_READABLE);
+        mSP = getSharedPreferences(Constant.TAG, MODE_PRIVATE);
         Bugly.init(mContext, "c733286b0d", false);
     }
 }

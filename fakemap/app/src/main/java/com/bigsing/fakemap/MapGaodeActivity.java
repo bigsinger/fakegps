@@ -232,7 +232,7 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
             @Override
             public void onClick(DialogInterface dialog, int which) {
 //                LatLng desLatLng = MapConvert.convertBaiduToGPS(latLng);
-                SharedPreferences preferences = getSharedPreferences(Constant.TAG, Context.MODE_WORLD_READABLE);
+                SharedPreferences preferences = getSharedPreferences(Constant.TAG, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("baidulatitude", latLng.latitude + "");
                 editor.putString("baidulongitude", latLng.longitude + "");

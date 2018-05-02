@@ -43,7 +43,7 @@ public class SettingActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             getPreferenceManager().setSharedPreferencesName(Constant.TAG);
-            getPreferenceManager().setSharedPreferencesMode(MODE_WORLD_READABLE);
+            getPreferenceManager().setSharedPreferencesMode(MODE_PRIVATE);
             addPreferencesFromResource(R.xml.pref_setting);
 
             final Preference mapselector = findPreference("gaodemap");    //地图选择器指示选择哪个地图来选点
