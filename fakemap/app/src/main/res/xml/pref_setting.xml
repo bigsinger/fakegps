@@ -1,10 +1,10 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <PreferenceCategory android:title="@string/settings">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings">
+    <PreferenceCategory android:title="@string/map_setting">
         <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="googlemap"
-        android:title="Google Map" />
+            android:defaultValue="false"
+            android:key="googlemap"
+            android:title="Google Map" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="gaodemap"
@@ -17,5 +17,14 @@
             android:defaultValue="false"
             android:key="baidumap"
             android:title="Baidu Map" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/language_setting">
+        <ListPreference
+            android:dialogTitle="@string/language_list_title"
+            android:entries="@array/setting_lang"
+            android:entryValues="@array/setting_lang"
+            android:key="setting_lang_list"
+            android:defaultValue="@string/lang_auto"
+            android:title="@string/language_list_title"/>
     </PreferenceCategory>
 </PreferenceScreen>

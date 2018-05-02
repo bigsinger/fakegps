@@ -32,6 +32,12 @@
     <string name="tip_already_saved">已保存</string>
 
     <string name="settings">设置</string>
-
+    <string name="map_setting">地图设置</string>
+    <string name="language_setting">语言设置</string>
+    <string name="language_list_title">请选择一种语言</string>
+    <string name="lang_auto">自动(跟随系统设置)</string>
+    <string name="lang_en">英文</string>
+    <string name="lang_ch">中文</string>
+    <string name="lang_setting_is_applyed">已应用语言修改，重启App后生效</string>
 
 </resources>

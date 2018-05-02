@@ -1,15 +1,16 @@
 package com.bigsing.fakemap;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,7 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +36,7 @@ import com.bigsing.fakemap.utils.Utils;
 import com.tencent.bugly.beta.Beta;
 
 import java.util.ArrayList;
-import java.util.Locale;
+
 
 /**
  * Created by sing on 2017/4/19.
@@ -69,7 +70,6 @@ public abstract class MyMapActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initView();
 
-        updateConfig();
         initNavigationView();
 
         initChangeTheme();
@@ -180,15 +180,6 @@ public abstract class MyMapActivity extends BaseActivity {
             }
         });
 
-    }
-
-    protected void updateConfig() {
-        Resources resources = this.getResources();
-        DisplayMetrics dm = resources.getDisplayMetrics();
-        Configuration config = resources.getConfiguration();
-        // 应用用户选择语言
-        config.locale = Locale.getDefault();
-        resources.updateConfiguration(config, dm);
     }
 
     protected void initNavigationView() {
