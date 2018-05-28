@@ -37,4 +37,8 @@
     <string name="lang_en">English</string>
     <string name="lang_ch">Chinese</string>
     <string name="lang_setting_is_applyed">Language modification has been applied to restart App and take effect</string>
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
+    <string name="location_permission_denied">This apk requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.</string>
+    <string name="permission_required_toast">Location permission is required for this apk.</string>
 </resources>

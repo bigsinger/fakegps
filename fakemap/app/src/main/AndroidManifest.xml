@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.bigsing.fakemap">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -75,6 +76,11 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
+
+        <!-- 谷歌地图 -->
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyD6nDbMRu92fuAyc6o1jlKK7xYZ2A0_cCI"/>
+        "/>
 
         <activity android:name=".MapGaodeActivity">
             <intent-filter>

@@ -9,12 +9,12 @@ android {
 
         }
     }
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.bigsing.fakemap"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 25
         versionCode 5
         versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -45,7 +45,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:support-annotations:+'
     //如果需要引入文档，方便查看的话
     compile 'de.robv.android.xposed:api:82:sources'
@@ -53,11 +53,12 @@ dependencies {
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //compile 'com.tencent.bugly:crashreport:latest.release'
     compile files('libs/BaiduLBS_Android.jar')
-
     //2D地图so及jar
     compile 'com.amap.api:map2d:latest.integration'
     //定位功能
     compile 'com.amap.api:location:latest.integration'
     //搜索功能
     compile 'com.amap.api:search:latest.integration'
+    //谷歌地图
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
 }

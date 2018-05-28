@@ -39,5 +39,9 @@
     <string name="lang_en">英文</string>
     <string name="lang_ch">中文</string>
     <string name="lang_setting_is_applyed">已应用语言修改，重启App后生效</string>
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">需要访问位置服务来演示我的位置特性，它显示您当前在地图上的位置.</string>
+    <string name="location_permission_denied">本APK需要位置权限来启用我的位置,请尝试并授予访问使用位置的权限.</string>
+    <string name="permission_required_toast">本apk需要获取定位权限,请授予该权限</string>
 
 </resources>
