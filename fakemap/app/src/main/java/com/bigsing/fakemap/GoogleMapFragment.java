@@ -1,46 +1,85 @@
 package com.bigsing.fakemap;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Telephony;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
-import com.bigsing.fakemap.MyMapActivity;
+import com.bigsing.fakemap.R;
 import com.bigsing.fakemap.utils.PermissionUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
- * Created by hzhuqi on 2018/5/15.
+ * Created by hzhuqi on 2018/5/29.
  */
-public class MapGoogleActivity extends MyMapActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
+public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, MyMapActivity.SearchAndLocationInterface {
+    private MapView mMapView;
     private GoogleMap mMap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private boolean mPermissionDenied = false;
 
+    private Context mContent;
+    private AppCompatActivity mActivity;
+
+    public GoogleMapFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public GoogleMapFragment(Activity activity) {
+        this.mActivity = (AppCompatActivity) activity;
+        this.mContent = activity.getApplication();
+    }
+
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-     //   setContentView(R.layout.layout_content_google_map);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_google_map, null, false);
+        initView(rootView, savedInstanceState);
+        return rootView;
+    }
+
+    private void initView(View rootView, Bundle mapViewBundle) {
+//        SupportMapFragment mapFragment = (SupportMapFragment) ((FragmentActivity) getActivity()).getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
+//        Bundle mapViewBundle = null;
+//        if (savedInstanceState != null) {
+//            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+//        }
+//        mMapView = (MapView) findViewById(R.id.map);
+        mMapView = rootView.findViewById(R.id.google_map_view);
+        mMapView.onCreate(mapViewBundle);
+        mMapView.onResume();
+        mMapView.getMapAsync(this);
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        initClickEvent();
+        enableMyLocation();
     }
 
     private void initClickEvent() {
@@ -62,28 +101,11 @@ public class MapGoogleActivity extends MyMapActivity implements OnMapReadyCallba
         });
     }
 
-    @Override
-    protected void doSearchInCity(String cityName) {
-
-    }
-
-    @Override
-    protected void doRequestLocation() {
-
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        initClickEvent();
-        enableMyLocation();
-    }
-
     private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(mContent, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+            PermissionUtils.requestPermission(mActivity, LOCATION_PERMISSION_REQUEST_CODE,
                     android.Manifest.permission.ACCESS_FINE_LOCATION, false);
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
@@ -92,38 +114,10 @@ public class MapGoogleActivity extends MyMapActivity implements OnMapReadyCallba
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
-            return;
-        }
-
-        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // Enable the my location layer if the permission has been granted.
-            enableMyLocation();
-            autoPositionToCurrentPosition();
-        } else {
-            // Display the missing permission error dialog when the fragments resume.
-            mPermissionDenied = true;
-        }
-    }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        if (mPermissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError();
-            mPermissionDenied = false;
-        }
-    }
-
     @SuppressLint("MissingPermission")
     //自动将标记移动到当前所在位置
     private void autoPositionToCurrentPosition() {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         //设置Criteria服务商的信息
         Criteria criteria = new Criteria();
         //经度要求
@@ -141,9 +135,13 @@ public class MapGoogleActivity extends MyMapActivity implements OnMapReadyCallba
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentPosition));
     }
 
-    private void showMissingPermissionError() {
-        //   Toast.makeText(getApplicationContext(),R.string.location_permission_denied,Toast.LENGTH_LONG).show();
-        PermissionUtils.PermissionDeniedDialog
-                .newInstance(true).show(getSupportFragmentManager(), "dialog");
+    @Override
+    public void doSearchInCity(String cityName) {
+
+    }
+
+    @Override
+    public void doRequestLocation() {
+        autoPositionToCurrentPosition();
     }
 }

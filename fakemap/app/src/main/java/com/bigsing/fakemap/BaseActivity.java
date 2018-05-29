@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -19,7 +20,7 @@ import java.util.Locale;
  * Created by sing on 2017/4/19.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public  class BaseActivity extends AppCompatActivity {
     protected String actName;//用于友盟页面统计
 
 
@@ -28,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         updateConfig(getApplicationContext());
         ActivityCollector.getInstance().addActivity(this);
-        actName = setActName();
+       // actName = setActName();
 
     }
 
@@ -43,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public abstract String setActName();
+   // public abstract String setActName();
 
     @Override
     protected void onStart() {

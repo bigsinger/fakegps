@@ -82,7 +82,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyD6nDbMRu92fuAyc6o1jlKK7xYZ2A0_cCI"/>
         "/>
 
-        <activity android:name=".MapGaodeActivity">
+        <activity android:name=".MyMapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

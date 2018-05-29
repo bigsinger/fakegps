@@ -76,7 +76,7 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mapView = (com.amap.api.maps2d.MapView) findViewById(R.id.map);
+        mapView = (com.amap.api.maps2d.MapView) findViewById(R.id.gaode_map);
         mapView.onCreate(savedInstanceState);  //必须写
         aMap = mapView.getMap();
         //设置地图类型

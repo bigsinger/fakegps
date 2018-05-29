@@ -39,8 +39,9 @@
                     android:src="@drawable/ic_near_me_white_24dp"/>
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
-
-        <include layout="@layout/layout_content_gaodemap" />
+        <include layout="@layout/layout_map_content" />
+        <!--<include layout="@layout/layout_content_baidumap" />-->
+        <!--<include layout="@layout/layout_content_google_map"/>-->
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

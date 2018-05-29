@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigsing.fakemap.adapter.EasyRecyclerViewAdapter;
 import com.bigsing.fakemap.adapter.ThemeColorAdapter;
@@ -36,13 +40,14 @@ import com.bigsing.fakemap.utils.Utils;
 import com.tencent.bugly.beta.Beta;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
  * Created by sing on 2017/4/19.
  */
 
-public abstract class MyMapActivity extends BaseActivity {
+public class MyMapActivity extends BaseActivity {
     public static final String TAG = "MyMapActivity";
     private final static int INTERVEL = 200;
 
@@ -53,27 +58,25 @@ public abstract class MyMapActivity extends BaseActivity {
     private SearchView searchView;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private Fragment mCurrentFragment;
 
     private ArrayList<ThemeColor> themeColorList = new ArrayList<>();
     private ThemeColorAdapter themeColorAdapter = new ThemeColorAdapter();
 
 //    protected abstract void updatePosition(LatLng latLng, boolean reCenter);
 
-    @Override
-    public String setActName() {
-        return TAG;
-    }
+//    @Override
+//    public String setActName() {
+//        return TAG;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-
         initNavigationView();
-
         initChangeTheme();
-
         // 检测本插件是否在xposed中激活
         isXposedActived();
     }
@@ -90,10 +93,22 @@ public abstract class MyMapActivity extends BaseActivity {
                 });
     }
 
-    protected abstract void doSearchInCity(String cityName);
+    protected void doSearchInCity(String cityName) {
+        if (mCurrentFragment instanceof BaiduMapFragment) {
+            ((BaiduMapFragment) mCurrentFragment).doSearchInCity(cityName);
+        } else if (mCurrentFragment instanceof GoogleMapFragment) {
+            ((GoogleMapFragment) mCurrentFragment).doSearchInCity(cityName);
+        }
+    }
 
     //自动定位
-    protected abstract void doRequestLocation();
+    protected void doRequestLocation() {
+        if (mCurrentFragment instanceof BaiduMapFragment) {
+            ((BaiduMapFragment) mCurrentFragment).doRequestLocation();
+        } else if (mCurrentFragment instanceof GoogleMapFragment) {
+            ((GoogleMapFragment) mCurrentFragment).doRequestLocation();
+        }
+    }
 
     //把用户选择的经纬做点保存到xml中
     protected void saveFakeLocation(Activity activity, double latitude, double longitude) {
@@ -115,18 +130,44 @@ public abstract class MyMapActivity extends BaseActivity {
         Utils.toast("地图位置已刷新~");
     }
 
-    protected void initView() {
-        searchView = (SearchView) findViewById(R.id.searchView);
-        btn_autoLocate = (ImageView) findViewById(R.id.btn_autoLocate);
 
-        //打开收藏列表
+    //自动根据用户所在的位置使用不同的地图视图，国内用户使用百度地图，国外用户使用谷歌地图
+    private void inflateMapContentView() {
+        Fragment mapFragment = null;
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        String country = Locale.getDefault().getCountry();
+        //Toast.makeText(getApplicationContext(), country, Toast.LENGTH_LONG).show();
+        //country = "GW";
+        if (country != null && country.equals("CN")) {//国内用户，使用百度地图
+            mapFragment = new BaiduMapFragment(this);
+        } else {//国外使用谷歌地图
+            mapFragment = new GoogleMapFragment(this);
+        }
+        mCurrentFragment = mapFragment;
+        ft.replace(R.id.map_container_frame, mapFragment, null);
+        ft.commit();
+    }
+
+    private void switchMapFragment(Fragment f) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.map_container_frame, f, null);
+        ft.commit();
+    }
+
+    protected void initView() {
+        inflateMapContentView();
+        searchView = findViewById(R.id.searchView);
+        btn_autoLocate = findViewById(R.id.btn_autoLocate);
+
+        //打开搜索框
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });
-        //关闭收藏列表
+        //关闭搜索框
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -159,8 +200,6 @@ public abstract class MyMapActivity extends BaseActivity {
                 }
                 return false;
             }
-
-
         });
 
         //自动定位
@@ -296,13 +335,17 @@ public abstract class MyMapActivity extends BaseActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         ThemeUtils.setThemeColor(getResources().getColor(themeColorList.get(themeColorAdapter.getPosition()).getColor()));// 不要变换位置
                                         ThemeUtils.setThemePosition(themeColorAdapter.getPosition());
-                                        // finish();
-                                        new Handler().postDelayed(new Runnable() {
-                                            public void run() {
-                                                ActivityCollector.getInstance().refreshAllActivity();
-                                                // closeHandler.sendEmptyMessageDelayed(MSG_CLOSE_ACTIVITY, 300);
-                                            }
-                                        }, 100);
+                                        Toast.makeText(getApplicationContext(),"正在应用设置...",Toast.LENGTH_LONG).show();
+                                        Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(i);
+                                        //finish();
+//                                        new Handler().postDelayed(new Runnable() {
+//                                            public void run() {
+//                                                ActivityCollector.getInstance().refreshAllActivity();
+//                                                 //closeHandler.sendEmptyMessageDelayed(MSG_CLOSE_ACTIVITY, 300);
+//                                            }
+//                                        }, 100);
                                     }
                                 })
                                 .show();
@@ -319,4 +362,9 @@ public abstract class MyMapActivity extends BaseActivity {
         });
     }
 
+    public interface SearchAndLocationInterface {
+        void doSearchInCity(String cityName);
+        //自动定位
+        void doRequestLocation();
+    }
 }
