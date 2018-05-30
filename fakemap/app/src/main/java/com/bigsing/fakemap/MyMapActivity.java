@@ -2,15 +2,19 @@ package com.bigsing.fakemap;
 
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -77,6 +81,7 @@ public class MyMapActivity extends BaseActivity {
         initView();
         initNavigationView();
         initChangeTheme();
+        registerBroadCast();
         // 检测本插件是否在xposed中激活
         isXposedActived();
     }
@@ -149,11 +154,39 @@ public class MyMapActivity extends BaseActivity {
         ft.commit();
     }
 
-    private void switchMapFragment(Fragment f) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.map_container_frame, f, null);
-        ft.commit();
+    //监听设置页面切换地图的广播
+    public class ChangeMapTypeBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String mapType = intent.getStringExtra("map_type");
+            Fragment mapView = null;
+            if (mapType.equals("google")) {
+                mapView = new GoogleMapFragment(MyMapActivity.this);
+            } else {
+                mapView = new BaiduMapFragment(MyMapActivity.this);
+            }
+            switchMapFragment(mapView);
+        }
+    }
+
+    private void registerBroadCast() {
+        ChangeMapTypeBroadcastReceiver receiver = new ChangeMapTypeBroadcastReceiver();
+        IntentFilter filter = new IntentFilter("switchMapView");
+        registerReceiver(receiver, filter);
+    }
+
+    private void switchMapFragment(Fragment fragment) {
+        FragmentManager manager = getSupportFragmentManager();
+        if (mCurrentFragment != fragment) {
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.hide(mCurrentFragment);
+            mCurrentFragment = fragment;
+            if (!fragment.isAdded()) { // 判断传入的fragment是否已经被add()过
+                transaction.add(R.id.map_container_frame, fragment).show(fragment).commitAllowingStateLoss();
+            } else {
+                transaction.show(fragment).commitAllowingStateLoss();
+            }
+        }
     }
 
     protected void initView() {
@@ -335,7 +368,7 @@ public class MyMapActivity extends BaseActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         ThemeUtils.setThemeColor(getResources().getColor(themeColorList.get(themeColorAdapter.getPosition()).getColor()));// 不要变换位置
                                         ThemeUtils.setThemePosition(themeColorAdapter.getPosition());
-                                        Toast.makeText(getApplicationContext(),"正在应用设置...",Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), "正在应用设置...", Toast.LENGTH_LONG).show();
                                         Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
                                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(i);
@@ -364,7 +397,9 @@ public class MyMapActivity extends BaseActivity {
 
     public interface SearchAndLocationInterface {
         void doSearchInCity(String cityName);
+
         //自动定位
         void doRequestLocation();
     }
+
 }

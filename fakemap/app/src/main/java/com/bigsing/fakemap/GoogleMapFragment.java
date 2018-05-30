@@ -54,7 +54,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, A
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_google_map, null, false);
+        View rootView = inflater.inflate(R.layout.fragment_google_map, container, false);
         initView(rootView, savedInstanceState);
         return rootView;
     }

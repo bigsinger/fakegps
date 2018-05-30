@@ -1,22 +1,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings">
     <PreferenceCategory android:title="@string/map_setting">
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="googlemap"
-            android:title="Google Map" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="gaodemap"
-            android:title="Gaode Map" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="tecentmap"
-            android:title="Tecent Map" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="baidumap"
-            android:title="Baidu Map" />
+        <ListPreference
+            android:dialogTitle="@string/map_list_title"
+            android:entries="@array/setting_mpas"
+            android:entryValues="@array/setting_mpas"
+            android:key="setting_map_list"
+            android:defaultValue="@string/baidu_map"
+            android:title="@string/map_list_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/language_setting">
         <ListPreference

@@ -5,4 +5,8 @@
         <item>@string/lang_en</item>
         <item>@string/lang_ch</item>
     </string-array>
+    <string-array name="setting_mpas">
+        <item>@string/baidu_map</item>
+        <item>@string/google_map</item>
+    </string-array>
 </resources>
