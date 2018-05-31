@@ -99,7 +99,7 @@ public class Utils {
             context.createConfigurationContext(config);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             config.setLocale(locale);
-            context.createConfigurationContext(config);
+            resources.updateConfiguration(config, dm);
         } else {
             config.locale = locale;
             resources.updateConfiguration(config, dm);
