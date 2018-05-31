@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -39,6 +41,7 @@ import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.bigsing.fakemap.utils.MapConvert;
+import com.bigsing.fakemap.utils.PermissionUtils;
 import com.bigsing.fakemap.utils.Utils;
 
 /**
@@ -140,6 +143,7 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
     }
 
     private void initData() {
+        requestLocationPermission();
         autoPositionToCurrentPosition();//自动定位到手机所在位置
     }
 
@@ -195,7 +199,7 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
                 .longitude(latLng.longitude).build();
         //设置图标在地图上的位置
         mBaiduMap.setMyLocationData(locData);
-        mLastCity="";
+        mLastCity = "";
         if (reCenter == true) {
 //            //获得百度地图状态
 //            MapStatus.Builder builder = new MapStatus.Builder();
@@ -213,8 +217,8 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
 
     @Override
     public void doSearchInCity(String cityName) {
-        if(mLastCity==null||mLastCity.equals(""))
-            mLastCity="杭州";
+        if (mLastCity == null || mLastCity.equals(""))
+            mLastCity = "杭州";
         mPoiSearch.searchInCity((new PoiCitySearchOption())
                 .city(mLastCity)
                 .keyword(cityName)
@@ -253,6 +257,7 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
         }
 
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -270,6 +275,14 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+    }
+
+    private void requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(mContent, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(mActivity, 1, android.Manifest.permission.ACCESS_FINE_LOCATION, false);
+        }
     }
 
 
