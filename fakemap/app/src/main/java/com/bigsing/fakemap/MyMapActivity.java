@@ -154,20 +154,25 @@ public class MyMapActivity extends BaseActivity {
         IntentFilter filter = new IntentFilter("switchMapView");
         registerReceiver(mReceiver, filter);
     }
-
-    private void switchMapFragment(Fragment fragment) {
-        FragmentManager manager = getSupportFragmentManager();
-        if (mCurrentFragment != fragment) {
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.hide(mCurrentFragment);
-            mCurrentFragment = fragment;
-            if (!fragment.isAdded()) { // 判断传入的fragment是否已经被add()过
-                transaction.add(R.id.map_container_frame, fragment).show(fragment).commitAllowingStateLoss();
-            } else {
-                transaction.show(fragment).commitAllowingStateLoss();
-            }
-        }
+    private void switchMapFragment(Fragment fragment){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.map_container_frame, fragment, null);
+        ft.commitAllowingStateLoss();
     }
+//    private void switchMapFragment(Fragment fragment) {
+//        FragmentManager manager = getSupportFragmentManager();
+//        if (mCurrentFragment != fragment) {
+//            FragmentTransaction transaction = manager.beginTransaction();
+//            transaction.hide(mCurrentFragment);
+//            mCurrentFragment = fragment;
+//            if (!fragment.isAdded()) { // 判断传入的fragment是否已经被add()过
+//                transaction.add(R.id.map_container_frame, fragment).show(fragment).commitAllowingStateLoss();
+//            } else {
+//                transaction.show(fragment).commitAllowingStateLoss();
+//            }
+//        }
+//    }
 
     protected void initView() {
         inflateMapContentView();
