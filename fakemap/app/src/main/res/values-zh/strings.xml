@@ -34,7 +34,7 @@
     <string name="settings">设置</string>
     <string name="map_setting">地图设置</string>
     <string name="language_setting">语言设置</string>
-    <string name="language_list_title">请选择一种语言</string>
+    <string name="language_list_title">选择一种语言</string>
 
     <string name="lang_auto">自动(跟随系统设置)</string>
     <string name="lang_en">英文</string>
@@ -45,7 +45,7 @@
     <string name="location_permission_denied">本APK需要位置权限来启用我的位置,请尝试并授予访问使用位置的权限.</string>
     <string name="permission_required_toast">本apk需要获取定位权限,请授予该权限</string>
     <!--设置界面地图设置相关-->
-    <string name="map_list_title">请选择一个地图供应商</string>
+    <string name="map_list_title">选择地图供应商</string>
     <string name="baidu_map">百度地图</string>
     <string name="google_map">谷歌地图</string>
 </resources>

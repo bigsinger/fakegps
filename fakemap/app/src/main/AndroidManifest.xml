@@ -103,8 +103,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".SettingActivity"
+            android:theme="@style/setting_style">
+        </activity>
     </application>
 
 </manifest>

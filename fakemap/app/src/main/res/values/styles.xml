@@ -16,8 +16,7 @@
 
     </style>
 
-    <style name="MyThemeGray" parent="Base.Theme.AppCompat.Dialog.Alert">
-    </style>
+    <style name="MyThemeGray" parent="Base.Theme.AppCompat.Dialog.Alert"></style>
 
     <!---===================================================================-->
 
@@ -52,4 +51,12 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
+
+    <style name="setting_style" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:focusable">false</item>
+        <item name="android:textColor">#ff000000</item> <!-- 字体颜色 -->
+        <item name="android:colorBackgroundCacheHint">#00000000</item> <!-- 背景缓存色透明，避免拖动全黑 -->
+        <item name="android:windowNoTitle">false</item>
+    </style>
+
 </resources>
