@@ -30,6 +30,7 @@
 ######################百度地图################################
 -keep class com.baidu.** {*;}
 -keep class vi.com.** {*;}
+-keep class mapsdkvi.com.**{*;}
 -dontwarn com.baidu.**
 ##############################################################
 
@@ -65,3 +66,5 @@
 -keep class com.bigsing.fakemap.MainHook {
     public void handleLoadPackage*;
 }
+
+-keep class com.google.**{*;}
