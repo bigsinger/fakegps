@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,7 +182,7 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 LatLng desLatLng = MapConvert.convertBaiduToGPS(latLng);
-                //saveFakeLocation(MapBaiduActivity.this, desLatLng.latitude, desLatLng.longitude);
+                Utils.saveFakeLocation(BaiduMapFragment.this, desLatLng.latitude, desLatLng.longitude);
             }
         });
         builder.create().show();
@@ -193,6 +195,7 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
                 .longitude(latLng.longitude).build();
         //设置图标在地图上的位置
         mBaiduMap.setMyLocationData(locData);
+        mLastCity="";
         if (reCenter == true) {
 //            //获得百度地图状态
 //            MapStatus.Builder builder = new MapStatus.Builder();
@@ -210,6 +213,8 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
 
     @Override
     public void doSearchInCity(String cityName) {
+        if(mLastCity==null||mLastCity.equals(""))
+            mLastCity="杭州";
         mPoiSearch.searchInCity((new PoiCitySearchOption())
                 .city(mLastCity)
                 .keyword(cityName)
@@ -248,28 +253,24 @@ public class BaiduMapFragment extends Fragment implements MyMapActivity.SearchAn
         }
 
     }
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-//        mMapView.onDestroy();
-//        mLocationClient.stop();
-//        //mSearch.destroy();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
-//        mMapView.onResume();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
-//        mMapView.onPause();
-//    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+        mLocationClient.stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
 
 
 }

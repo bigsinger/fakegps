@@ -3,6 +3,7 @@ package com.bigsing.fakemap;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -13,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.bigsing.fakemap.R;
+import com.bigsing.fakemap.utils.MapConvert;
 import com.bigsing.fakemap.utils.PermissionUtils;
+import com.bigsing.fakemap.utils.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -60,9 +64,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, A
     }
 
     private void initView(View rootView, Bundle mapViewBundle) {
-//        SupportMapFragment mapFragment = (SupportMapFragment) ((FragmentActivity) getActivity()).getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
 //        Bundle mapViewBundle = null;
 //        if (savedInstanceState != null) {
 //            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
@@ -97,6 +98,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, A
                 //Toast.makeText(getApplicationContext(), "地图被长按", Toast.LENGTH_LONG).show();
                 mMap.addMarker(new MarkerOptions().position(latLng).title("Marker in this position"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                showPositionInfo(latLng,"");
             }
         });
     }
@@ -135,6 +137,20 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, A
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentPosition));
     }
 
+    protected void showPositionInfo(final LatLng latLng, String posName) {
+        //保存地图选点并返回
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity, R.style.MyThemeGray);
+        builder.setTitle(posName);
+        builder.setMessage(latLng.toString());
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Utils.saveFakeLocation(GoogleMapFragment.this, latLng.latitude, latLng.longitude);
+            }
+        });
+        builder.create().show();
+    }
     @Override
     public void doSearchInCity(String cityName) {
 

@@ -227,7 +227,7 @@ public class MapBaiduActivity extends MyMapActivity implements OnGetPoiSearchRes
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 LatLng desLatLng = MapConvert.convertBaiduToGPS(latLng);
-                saveFakeLocation(MapBaiduActivity.this, desLatLng.latitude, desLatLng.longitude);
+                //saveFakeLocation(MapBaiduActivity.this, desLatLng.latitude, desLatLng.longitude);
             }
         });
         builder.create().show();

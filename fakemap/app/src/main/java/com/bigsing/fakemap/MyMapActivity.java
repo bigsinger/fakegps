@@ -63,7 +63,7 @@ public class MyMapActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private Fragment mCurrentFragment;
-
+    private ChangeMapTypeBroadcastReceiver mReceiver;
     private ArrayList<ThemeColor> themeColorList = new ArrayList<>();
     private ThemeColorAdapter themeColorAdapter = new ThemeColorAdapter();
 
@@ -115,26 +115,6 @@ public class MyMapActivity extends BaseActivity {
         }
     }
 
-    //把用户选择的经纬做点保存到xml中
-    protected void saveFakeLocation(Activity activity, double latitude, double longitude) {
-        SharedPreferences preferences = getSharedPreferences(Constant.TAG, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        if (activity instanceof MapBaiduActivity) {
-            //百度选点，是否需要转换？
-            editor.putString("baidulatitude", latitude + "");
-            editor.putString("baidulongitude", longitude + "");
-        } else if (activity instanceof MapGaodeActivity) {
-            //高德选点，是否需要转换？
-            editor.putString("gaodelatitude", latitude + "");
-            editor.putString("gaodelongitude", longitude + "");
-        }
-        editor.putString("latitude", latitude + "");
-        editor.putString("longitude", longitude + "");
-        editor.commit();
-        //MapBaiduActivity.this.finish();
-        Utils.toast("地图位置已刷新~");
-    }
-
 
     //自动根据用户所在的位置使用不同的地图视图，国内用户使用百度地图，国外用户使用谷歌地图
     private void inflateMapContentView() {
@@ -170,9 +150,9 @@ public class MyMapActivity extends BaseActivity {
     }
 
     private void registerBroadCast() {
-        ChangeMapTypeBroadcastReceiver receiver = new ChangeMapTypeBroadcastReceiver();
+        mReceiver = new ChangeMapTypeBroadcastReceiver();
         IntentFilter filter = new IntentFilter("switchMapView");
-        registerReceiver(receiver, filter);
+        registerReceiver(mReceiver, filter);
     }
 
     private void switchMapFragment(Fragment fragment) {
@@ -402,4 +382,9 @@ public class MyMapActivity extends BaseActivity {
         void doRequestLocation();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
 }

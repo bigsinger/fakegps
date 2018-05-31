@@ -166,7 +166,7 @@ public class MapGaodeActivity extends MyMapActivity implements CompoundButton.On
         if (popupWindow != null) {
             popupWindow.dismiss();
         }
-        saveFakeLocation(MapGaodeActivity.this, info.getLatitude(), info.getLonTitude());
+        //saveFakeLocation(MapGaodeActivity.this, info.getLatitude(), info.getLonTitude());
     }
 
 

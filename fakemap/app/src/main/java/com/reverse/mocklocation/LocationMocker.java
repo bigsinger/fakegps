@@ -51,9 +51,10 @@ public class LocationMocker {
 
     public static LatLng getLatLng() {
         //读取配置坐标位置
+        //SharedPreferences preferences = MyApp.getSharedPreferences();
         XSharedPreferences preferences = new XSharedPreferences(Constant.PACKAGE_THIS, Constant.TAG);
-        String s1 = preferences.getString("latitude", "");
-        String s2 = preferences.getString("longitude", "");
+        String s1 = preferences.getString("latitude", "30.213583");
+        String s2 = preferences.getString("longitude", "120.165784");
         LatLng latLng = new LatLng(Double.parseDouble(s1), Double.parseDouble(s2));
         XposedBridge.log("read XSharedPreferences latitude:" + latLng.latitude + " longitude: " + latLng.longitude);
         return latLng;

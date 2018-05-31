@@ -1,7 +1,10 @@
 package com.bigsing.fakemap.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -9,12 +12,20 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.LocaleList;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
+import com.bigsing.fakemap.BaiduMapFragment;
 import com.bigsing.fakemap.Constant;
+import com.bigsing.fakemap.GoogleMapFragment;
+import com.bigsing.fakemap.MapBaiduActivity;
+import com.bigsing.fakemap.MapGaodeActivity;
 import com.bigsing.fakemap.MyApp;
+import com.bigsing.fakemap.R;
 
 import java.util.Locale;
 
@@ -93,6 +104,24 @@ public class Utils {
             config.locale = locale;
             resources.updateConfiguration(config, dm);
         }
+    }
+
+    public static void saveFakeLocation(Fragment fragment, double latitude, double longitude) {
+        SharedPreferences preferences = fragment.getActivity().getSharedPreferences(Constant.TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        if (fragment instanceof BaiduMapFragment) {
+            //百度选点，是否需要转换？
+            editor.putString("baidulatitude", latitude + "");
+            editor.putString("baidulongitude", longitude + "");
+        } else if (fragment instanceof GoogleMapFragment) {
+            //高德选点，是否需要转换？
+            editor.putString("googlelatitude", latitude + "");
+            editor.putString("googlelongitude", longitude + "");
+        }
+        editor.putString("latitude", latitude + "");
+        editor.putString("longitude", longitude + "");
+        editor.commit();
+        Utils.toast("地图位置已刷新~");
     }
 
 }
