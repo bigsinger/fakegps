@@ -1,7 +1,10 @@
 package com.reverse.mocklocation;
 
 import android.location.Criteria;
+import android.location.Location;
 import android.location.LocationManager;
+
+import com.baidu.mapapi.model.LatLng;
 
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -29,6 +32,8 @@ public class getBestProviderHooker extends BaseMethodHooker {
     @Override
     protected void afterCall(MethodHookParam paramMethodHookParam) {
         XposedBridge.log("LM:gbp return GPS_PROVIDER directly: " + this.mParamString);
-        paramMethodHookParam.setResult("gps");
+        LatLng latLng = LocationMocker.getLatLng();
+        Location location = LocationMocker.makeLocation(latLng.latitude, latLng.longitude);
+        paramMethodHookParam.setResult(location);
     }
 }

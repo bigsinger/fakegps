@@ -2,6 +2,8 @@ package com.bigsing.fakemap;
 
 
 import android.app.Activity;
+
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,17 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import android.os.Message;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+
 import android.text.TextUtils;
 
 import android.view.LayoutInflater;
@@ -35,12 +27,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bigsing.fakemap.adapter.EasyRecyclerViewAdapter;
 import com.bigsing.fakemap.adapter.ThemeColorAdapter;
 import com.bigsing.fakemap.utils.ActivityCollector;
 import com.bigsing.fakemap.utils.ThemeColor;
 import com.bigsing.fakemap.utils.ThemeUtils;
 import com.bigsing.fakemap.utils.Utils;
+import com.google.android.material.navigation.NavigationView;
 import com.tencent.bugly.beta.Beta;
 
 import java.util.ArrayList;
@@ -87,6 +91,7 @@ public class MyMapActivity extends BaseActivity {
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override

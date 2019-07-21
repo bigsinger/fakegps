@@ -69,7 +69,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="N7NSNI7NGaWLmpBy2S6RdmBbBWYaSkjD"
+            android:value="aYkb6IkrwYVZrLah84tW427DGKyK7iTT"
              /><!--android:value="07wPoL3nFTnM0R2CsP4ggmuFkbS5fKEW"-->
         <!-- 百度地图定位监听服务 -->
         <service
@@ -80,7 +80,7 @@
         <!-- 谷歌地图 -->
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyD6nDbMRu92fuAyc6o1jlKK7xYZ2A0_cCI"/>
-        "/>
+
 
         <activity android:name=".MyMapActivity">
             <intent-filter>
@@ -95,7 +95,7 @@
             android:theme="@android:style/Theme.Translucent" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.bigsing.fakemap.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

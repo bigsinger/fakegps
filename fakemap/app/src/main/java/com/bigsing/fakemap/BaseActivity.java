@@ -6,10 +6,11 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bigsing.fakemap.utils.ActivityCollector;
 import com.bigsing.fakemap.utils.Utils;
