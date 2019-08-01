@@ -1,6 +1,6 @@
 {
 "title":"1.8版本更新",
-"versionName":"1.8",
+"versionName":"1.7",
 "content":"1.8版本更新\n1,修正一些location API以前未设置导致应用崩溃bug\n2,更新sdk支持到到最新版本\n3,移除bug自动上传sdk,发现bug请移步至github\n4,更改版本更新检查方式为使用github",
 "downloadUrl":"https://raw.githubusercontent.com/bigsinger/fakegps/master/release/1.8.apk"
 }
