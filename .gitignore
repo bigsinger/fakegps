@@ -1,2 +1,4 @@
 fakemap/app/release/
 fakemap/.idea/misc.xml
+sign.keystore
+fakemap/app/sign.gradle

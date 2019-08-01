@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+
+apply from: "./sign.gradle"
+
+
 android {
     //签名
     signingConfigs {
@@ -17,7 +21,7 @@ android {
         applicationId "com.bigsing.fakemap"
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 5
+        versionCode 8
         versionName "1.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
@@ -31,7 +35,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
-            signingConfig signingConfigs.normal
+            signingConfig signingConfigs.release
             proguardFile 'proguard-rules.pro'
         }
 
@@ -82,6 +86,5 @@ dependencies {
     //谷歌地图
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
-
-
 }
+
