@@ -52,4 +52,6 @@
     <string name="google_map">Google Map</string>
     <!--<string name="baidu_map">百度地图</string>-->
     <!--<string name="google_map">谷歌地图</string>-->
+    <string name="version_check_failure">版本检查失败,请检查网络连接</string>
+    <string name="version_not_new">暂无新版本</string>
 </resources>

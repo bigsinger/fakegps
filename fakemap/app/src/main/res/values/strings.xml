@@ -46,4 +46,8 @@
     <string name="map_list_title">Select a map provider</string>
     <string name="baidu_map">Baidu Map</string>
     <string name="google_map">Google Map</string>
+
+
+    <string name="version_check_failure">Version check faild! Please check network connection.</string>
+    <string name="version_not_new">No new update is available</string>
 </resources>

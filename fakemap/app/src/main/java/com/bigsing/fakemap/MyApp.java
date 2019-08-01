@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-import com.tencent.bugly.Bugly;
+
 
 /**
  * Created by sing on 2017/4/19.
@@ -31,6 +31,6 @@ public class MyApp extends Application {
         } else {
             mSP = getSharedPreferences(Constant.TAG, MODE_WORLD_READABLE);
         }
-        Bugly.init(mContext, "c733286b0d", false);
+
     }
 }
