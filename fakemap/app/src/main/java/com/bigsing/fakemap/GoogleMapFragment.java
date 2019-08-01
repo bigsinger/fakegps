@@ -120,7 +120,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, A
     @SuppressLint("MissingPermission")
     //自动将标记移动到当前所在位置
     private void autoPositionToCurrentPosition() {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) MyApp.mContext.getSystemService(Context.LOCATION_SERVICE);
         //设置Criteria服务商的信息
         Criteria criteria = new Criteria();
         //经度要求

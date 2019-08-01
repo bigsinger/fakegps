@@ -1,6 +1,7 @@
 package com.bigsing.fakemap;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -21,31 +22,26 @@ import java.util.Locale;
  * Created by sing on 2017/4/19.
  */
 
-public  class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity {
     protected String actName;//用于友盟页面统计
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        updateConfig(getApplicationContext());
         ActivityCollector.getInstance().addActivity(this);
-       // actName = setActName();
+        // actName = setActName();
 
     }
 
-    protected void updateConfig(Context context) {
-        String lang = MyApp.getSharedPreferences().getString("setting_lang_list", getString(R.string.lang_auto));
-        if (lang.equals(getString(R.string.lang_auto))) {
-            Utils.changeLocalLanguage(context, Locale.getDefault());
-        } else if (lang.equals(getString(R.string.lang_en))) {
-            Utils.changeLocalLanguage(context, Locale.ENGLISH);
-        } else if (lang.equals(getString(R.string.lang_ch))) {
-            Utils.changeLocalLanguage(context, Locale.CHINA);
-        }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Context context = ContextWrapper.wrap(newBase, MyApp.getLocale());
+        super.attachBaseContext(context);
     }
 
-   // public abstract String setActName();
+
+    // public abstract String setActName();
 
     @Override
     protected void onStart() {

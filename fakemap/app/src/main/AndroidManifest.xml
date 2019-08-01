@@ -49,6 +49,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+
         <!-- Xposed -->
         <meta-data
             android:name="xposedmodule"
@@ -69,7 +74,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="aYkb6IkrwYVZrLah84tW427DGKyK7iTT"
+            android:value="N7NSNI7NGaWLmpBy2S6RdmBbBWYaSkjD"
              /><!--android:value="07wPoL3nFTnM0R2CsP4ggmuFkbS5fKEW"-->
         <!-- 百度地图定位监听服务 -->
         <service

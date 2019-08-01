@@ -38,6 +38,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bigsing.fakemap.adapter.EasyRecyclerViewAdapter;
 import com.bigsing.fakemap.adapter.ThemeColorAdapter;
 import com.bigsing.fakemap.utils.ActivityCollector;
@@ -57,6 +58,8 @@ import java.util.Locale;
  */
 
 public class MyMapActivity extends BaseActivity {
+    public static final int RESULT_CODE_RELOAD = 0xEFFF;
+    public static final int REQUEST_CODE_RELOAD = 0xFFFF;
     public static final String TAG = "MyMapActivity";
     private final static int INTERVEL = 200;
 
@@ -89,6 +92,19 @@ public class MyMapActivity extends BaseActivity {
         registerBroadCast();
         // 检测本插件是否在xposed中激活
         isXposedActived();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_RELOAD && resultCode == RESULT_CODE_RELOAD) {
+            Intent intent = getIntent();
+            overridePendingTransition(0, 0);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+        }
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -345,7 +361,7 @@ public class MyMapActivity extends BaseActivity {
                         Utils.openUrl(MyMapActivity.this, getString(R.string.url_home));
                         break;
                     case R.id.nav_menu_setting:
-                        startActivity(new Intent(MyMapActivity.this, SettingActivity.class));
+                        startActivityForResult(new Intent(MyMapActivity.this, SettingActivity.class), REQUEST_CODE_RELOAD);
                         break;
                     case R.id.nav_menu_theme:
                         View view = LayoutInflater.from(MyMapActivity.this).inflate(R.layout.dialog_theme_color, null, false);
