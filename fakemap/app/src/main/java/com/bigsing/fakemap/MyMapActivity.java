@@ -38,12 +38,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.allenliu.versionchecklib.v2.AllenVersionChecker;
-import com.allenliu.versionchecklib.v2.builder.UIData;
-import com.allenliu.versionchecklib.v2.callback.RequestVersionListener;
 import com.bigsing.fakemap.adapter.EasyRecyclerViewAdapter;
 import com.bigsing.fakemap.adapter.ThemeColorAdapter;
 import com.bigsing.fakemap.utils.ActivityCollector;
@@ -51,6 +45,7 @@ import com.bigsing.fakemap.utils.ThemeColor;
 import com.bigsing.fakemap.utils.ThemeUtils;
 import com.bigsing.fakemap.utils.Utils;
 import com.google.android.material.navigation.NavigationView;
+import com.tencent.bugly.beta.Beta;
 
 
 import java.util.ArrayList;
@@ -339,7 +334,10 @@ public class MyMapActivity extends BaseActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_menu_check:
                         /***** 检查更新 *****/
-                        checkUpgrad();
+                        Beta.strToastYourAreTheLatestVersion = getString(R.string.versionislatest);
+                        Beta.strToastCheckUpgradeError = getString(R.string.checkingupgradefailed);
+                        Beta.strToastCheckingUpgrade = getString(R.string.checkingupgrade);
+                        Beta.checkUpgrade();
                         break;
                     case R.id.nav_menu_recommend:
                     case R.id.nav_menu_help:
@@ -387,35 +385,6 @@ public class MyMapActivity extends BaseActivity {
                 return true;
             }
         });
-    }
-
-    private void checkUpgrad() {
-        AllenVersionChecker
-                .getInstance()
-                .requestVersion()
-                .setRequestUrl("https://raw.githubusercontent.com/bigsinger/fakegps/master/release/version.json")
-                .request(new RequestVersionListener() {
-                    @Nullable
-                    @Override
-                    public UIData onRequestVersionSuccess(String json) {
-                        JSONObject jsonObject = (JSONObject) JSON.parse(json);
-                        if(Utils.getVersionInfo(MyMapActivity.this).equals(jsonObject.getString("versionName"))){
-                            Toast.makeText(MyMapActivity.this, R.string.version_not_new, Toast.LENGTH_SHORT);
-                            return  null;
-                        }
-                        return UIData.create().setTitle(jsonObject.getString("title")).
-                                setContent(jsonObject.getString("content")).
-                                setDownloadUrl(jsonObject.getString("downloadUrl"));
-                    }
-
-                    @Override
-                    public void onRequestVersionFailure(String message) {
-                        Toast.makeText(MyMapActivity.this, R.string.version_check_failure, Toast.LENGTH_SHORT);
-
-                    }
-                })
-                .executeMission(this);
-
     }
 
     public interface SearchAndLocationInterface {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import com.tencent.bugly.Bugly;
 
 
 /**
@@ -31,6 +32,6 @@ public class MyApp extends Application {
         } else {
             mSP = getSharedPreferences(Constant.TAG, MODE_WORLD_READABLE);
         }
-
+        Bugly.init(mContext, "c733286b0d", false);
     }
 }
