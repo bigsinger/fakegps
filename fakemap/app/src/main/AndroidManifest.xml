@@ -72,10 +72,12 @@
 
         <service android:name="com.amap.api.location.APSService" />
 
+        <!---normal 签名使用这个key -->
+        <!--aYkb6IkrwYVZrLah84tW427DGKyK7iTT -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="N7NSNI7NGaWLmpBy2S6RdmBbBWYaSkjD"
-             /><!--android:value="07wPoL3nFTnM0R2CsP4ggmuFkbS5fKEW"-->
+             />
         <!-- 百度地图定位监听服务 -->
         <service
             android:name="com.baidu.location.f"
