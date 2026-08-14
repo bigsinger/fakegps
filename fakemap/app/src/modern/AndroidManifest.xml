@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <application>
+        <provider
+            android:name="io.github.libxposed.service.XposedProvider"
+            tools:node="remove" />
+        <provider
+            android:name="io.github.libxposed.service.SecureXposedProvider"
+            android:authorities="${applicationId}.XposedService"
+            android:exported="true"
+            android:grantUriPermissions="false"
+            tools:ignore="ExportedContentProvider" />
+    </application>
+</manifest>

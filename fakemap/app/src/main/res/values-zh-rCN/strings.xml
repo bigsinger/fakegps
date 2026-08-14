@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FakeMap 模拟位置</string>
+    <string name="app_description">用于开发测试与隐私测试的位置模拟工具</string>
+    <string name="app_subtitle">Android 6+ · 系统标准模拟 · 按应用 Xposed</string>
+    <string name="version_format">版本 %1$s · %2$s Xposed 构建</string>
+
+    <string name="section_xposed">按应用 Xposed 模式</string>
+    <string name="xposed_status_active">Legacy Xposed 入口已在本应用中激活。</string>
+    <string name="xposed_status_legacy_unknown">未检测到激活状态。请在框架中启用模块，并把 FakeMap 和所有目标应用加入作用域。</string>
+    <string name="xposed_status_modern">当前为 libxposed API 102 现代构建，请在 Vector 或其他兼容框架中检查激活和作用域。</string>
+    <string name="xposed_status_modern_connected">现代 Xposed 服务已连接；请把 FakeMap 和目标应用加入框架作用域。</string>
+    <string name="hook_enabled">启用位置替换</string>
+    <string name="target_packages">目标应用包名</string>
+    <string name="target_packages_hint">每行一个包名，例如：\ncom.example.testapp</string>
+    <string name="target_packages_help">只修改这里明确列出的第三方应用。还需把相同应用加入 Xposed 框架作用域，然后强行停止并重新打开。</string>
+
+    <string name="section_coordinate">WGS-84 坐标</string>
+    <string name="latitude">纬度</string>
+    <string name="longitude">经度</string>
+    <string name="accuracy_m">精度（米）</string>
+    <string name="altitude_m">海拔（米）</string>
+    <string name="speed_mps">速度（米/秒）</string>
+    <string name="bearing_deg">方向（度）</string>
+    <string name="pick_on_map">在地图上选点</string>
+    <string name="save_configuration">保存位置和作用域</string>
+    <string name="configuration_saved">配置已保存。新加入的目标应用需要重新打开。</string>
+    <string name="configuration_saved_pending">配置已保存在本机，但现代 Xposed 尚未连接；请启用模块并重开 FakeMap 后同步。</string>
+
+    <string name="section_mock_provider">Android 系统标准模拟模式</string>
+    <string name="mock_provider_help">无需 Xposed。请先在开发者选项中把 FakeMap 选为模拟位置信息应用，再启动前台服务。</string>
+    <string name="mock_status_running">系统标准模拟服务正在运行。</string>
+    <string name="mock_status_stopped">系统标准模拟服务已停止。</string>
+    <string name="mock_status_not_selected">尚未把 FakeMap 选为模拟位置信息应用。</string>
+    <string name="open_developer_options">打开开发者选项</string>
+    <string name="start_mock">开始模拟</string>
+    <string name="stop_mock">停止模拟</string>
+    <string name="mock_started">位置模拟已启动。</string>
+    <string name="mock_stopped">位置模拟已停止，测试 Provider 已移除。</string>
+    <string name="mock_start_failed">无法启动。请将 FakeMap 选为模拟位置应用并授予位置权限。</string>
+    <string name="mock_delivery_failed">所有测试 Provider 都拒绝了位置更新，模拟已安全停止。</string>
+    <string name="location_permission_required">Android 定位前台服务需要位置权限。</string>
+
+    <string name="section_map">地图服务</string>
+    <string name="map_provider">地图来源</string>
+    <string name="map_provider_auto">自动（目标点在大陆时用高德，境外用国际地图）</string>
+    <string name="map_provider_amap">高德地图 JS API</string>
+    <string name="map_provider_osm">国际栅格地图</string>
+    <string name="amap_key">高德 Web API Key</string>
+    <string name="amap_key_hint">使用高德时必填；项目不提交任何真实 Key</string>
+    <string name="amap_security_code">高德 JS 安全密钥</string>
+    <string name="amap_security_hint">仅限开发者自备 Key；生产分发必须使用高德 serviceHost 或合规原生 SDK</string>
+    <string name="osm_tile_hint">https://tile.openstreetmap.org/{z}/{x}/{y}.png</string>
+    <string name="tile_attribution">栅格数据署名文字</string>
+    <string name="tile_attribution_url">署名许可链接（HTTPS）</string>
+    <string name="map_policy_note">默认 OpenStreetMap 公共瓦片仅适合轻量开发测试；生产环境请配置有授权的瓦片服务。</string>
+
+    <string name="help">使用帮助</string>
+    <string name="close">关闭</string>
+    <string name="cancel">取消</string>
+    <string name="use_this_location">使用此位置</string>
+    <string name="map_loading">正在加载地图…</string>
+    <string name="map_tap_hint">点击地图选择位置；应用内部始终保存 WGS-84 坐标。</string>
+    <string name="map_coordinate_format">WGS-84：%1$.6f, %2$.6f</string>
+    <string name="map_amap_credentials_missing">缺少高德 Key 或 JS 安全密钥，正在启动国际地图。</string>
+    <string name="map_amap_fallback">高德不可用，已切换到国际地图。</string>
+    <string name="map_ready_amap">高德地图已就绪，点击地图选择位置。</string>
+    <string name="map_ready_international">国际栅格地图已就绪，点击地图选择位置。</string>
+    <string name="map_ready_international_fallback">高德不可用，国际栅格地图已就绪。</string>
+    <string name="map_network_error">地图数据不可用，请检查网络、凭据和服务配额。</string>
+    <string name="map_tls_error">地图连接的证书校验失败，已阻止加载。</string>
+    <string name="map_internal_error">无法生成地图配置。</string>
+    <string name="map_coordinate_system_error">地图返回了不支持的坐标系。</string>
+    <string name="map_tile_error">栅格瓦片无响应，请检查所配置的服务。</string>
+    <string name="invalid_coordinate">纬度必须在 -90～90，经度必须在 -180～180。</string>
+    <string name="invalid_number">请检查精度、海拔、速度和方向参数。</string>
+    <string name="invalid_target_packages">目标包名无效，或包含不允许注入的系统包。</string>
+    <string name="invalid_tile_url">瓦片地址必须使用 HTTPS，并包含 {z}、{x}、{y}。</string>
+    <string name="invalid_tile_attribution">请为栅格服务填写署名文字和有效的 HTTPS 许可链接。</string>
+
+    <string name="notification_channel_name">位置模拟</string>
+    <string name="notification_channel_description">Android 系统标准模拟位置运行时显示</string>
+    <string name="notification_title">FakeMap 位置模拟正在运行</string>
+    <string name="notification_text_format">%1$.6f, %2$.6f · 点击进入配置</string>
+
+    <string name="help_title">FakeMap 使用帮助</string>
+    <string name="help_body">1. 在地图中选点或直接输入 WGS-84 坐标，然后保存。\n\n2. 系统标准模式：开启开发者选项，在“选择模拟位置信息应用”中选择 FakeMap，返回本应用点击“开始模拟”。该模式不需要 Root 或 Xposed，并保留 Android 官方 Mock 标记。\n\n3. Xposed 模式：Android 6 原版 Xposed 或支持 New XSharedPreferences 的 legacy 框架使用 legacy；libxposed API 101/102 使用 modern。启用模块，把 FakeMap 和目标应用加入作用域，填写相同包名并保存，再强行停止并重开目标。原版 Xposed 的 Android 7/8 不受支持。\n\n4. 国内地图：高德仅作为中国大陆选点的开发者自备 Key 方案；生产分发须使用 serviceHost 或合规原生 SDK。国际地图使用配置的 HTTPS 栅格服务，OSM 公共端点没有 SLA。\n\n5. 内部统一保存 WGS-84；高德在中国大陆选出的 GCJ-02 坐标会在保存前转换。\n\n6. 卸载前请先停止模拟。本应用不伪造 GNSS 原始测量，不隐藏 Mock 标记，不篡改 Wi‑Fi/蜂窝状态，也不绕过完整性或反滥用系统。仅限在你有权测试的设备与应用中使用。</string>
+</resources>

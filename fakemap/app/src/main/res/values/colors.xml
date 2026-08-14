@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0077D9</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="white">#ffffff</color>
-    <color name="text_gray_4">#444444</color>
-    <color name="text_gray_6">#666666</color>
-    <color name="bg_light_gray">#F2F2F2</color>
-    <color name="blue_base">#0077D9</color>
-    <!--ThemeUtils defalutThemeColor-->
-
-    <color name="theme_red_base">#FB5B81</color>
-    <color name="theme_blue">#0077D9</color>
-    <color name="theme_blue_light">#03A9F4</color>
-    <color name="theme_balck">#000000</color>
-    <color name="theme_teal">#009688</color>
-    <color name="theme_brown">#795548</color>
-    <color name="theme_green">#4CAF50</color>
-    <color name="theme_red">#FF5252</color>
+    <color name="color_primary_dark">#0E4A3E</color>
+    <color name="color_accent">#E98A35</color>
+    <color name="color_background">#F4F7F6</color>
+    <color name="color_surface">#FFFFFFFF</color>
+    <color name="color_text_primary">#17211F</color>
+    <color name="color_text_secondary">#5A6764</color>
+    <color name="color_success">#137A4B</color>
+    <color name="color_warning">#A85D00</color>
+    <color name="color_error">#B3261E</color>
+    <color name="color_divider">#D8E1DE</color>
 </resources>

@@ -1,53 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Fake GPS</string>
-    <string name="app_desc">Change Map Location</string>
-    <string name="ok">OK</string>
-    <string name="open">open</string>
-    <string name="close">close</string>
+    <string name="app_name">FakeMap</string>
+    <string name="app_description">Location simulation for development and privacy testing</string>
+    <string name="app_subtitle">Android 6+ · standard mock provider · scoped Xposed</string>
+    <string name="version_format">Version %1$s · %2$s Xposed build</string>
 
-    <string name="header_name">Fake GPS</string>
-    <string name="header_desc">Change and Fake My GPS</string>
-    <string name="url_home">https://github.com/bigsinger/fakegps</string>
-    <string name="checkingupgrade">Checking Upgrade, Wait a moment...</string>
-    <string name="checkingupgradefailed">Checking Upgrade Failed. Please try again later</string>
-    <string name="versionislatest">The version is latest!</string>
+    <string name="section_xposed">Per-app Xposed mode</string>
+    <string name="xposed_status_active">Legacy Xposed entry is active in this app.</string>
+    <string name="xposed_status_legacy_unknown">Activation was not detected. Enable the module and include FakeMap plus every target app in framework scope.</string>
+    <string name="xposed_status_modern">Modern libxposed API 102 build. Verify activation and scope in Vector or another compatible framework.</string>
+    <string name="xposed_status_modern_connected">Modern Xposed service is connected. Add FakeMap and target apps to framework scope.</string>
+    <string name="hook_enabled">Enable location replacement</string>
+    <string name="target_packages">Target package names</string>
+    <string name="target_packages_hint">One package per line, for example:\ncom.example.testapp</string>
+    <string name="target_packages_help">Only listed third-party apps are changed. Add the same apps to the Xposed framework scope, then force-stop and reopen them.</string>
 
+    <string name="section_coordinate">WGS-84 coordinate</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="accuracy_m">Accuracy (m)</string>
+    <string name="altitude_m">Altitude (m)</string>
+    <string name="speed_mps">Speed (m/s)</string>
+    <string name="bearing_deg">Bearing (°)</string>
+    <string name="pick_on_map">Pick on map</string>
+    <string name="save_configuration">Save location and scope</string>
+    <string name="configuration_saved">Configuration saved. Reopen a newly added target app.</string>
+    <string name="configuration_saved_pending">Saved locally. Modern Xposed is not connected yet; enable the module and reopen FakeMap to synchronize.</string>
 
-    <string name="menu_check">Check Upgrade</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_recommend">Recommend</string>
-    <string name="menu_theme">Theme</string>
-    <string name="menu_help">Help</string>
-    <string name="menu_other">Other</string>
-    <string name="menu_setting">Setting</string>
-    <string name="menu_about">About</string>
+    <string name="section_mock_provider">Android standard mock mode</string>
+    <string name="mock_provider_help">Works without Xposed. In Developer options, select FakeMap as the mock location app, then start the foreground service.</string>
+    <string name="mock_status_running">Standard mock service is running.</string>
+    <string name="mock_status_stopped">Standard mock service is stopped.</string>
+    <string name="mock_status_not_selected">FakeMap is not selected as the mock location app.</string>
+    <string name="open_developer_options">Open Developer options</string>
+    <string name="start_mock">Start simulation</string>
+    <string name="stop_mock">Stop simulation</string>
+    <string name="mock_started">Location simulation started.</string>
+    <string name="mock_stopped">Location simulation stopped and test providers were removed.</string>
+    <string name="mock_start_failed">Unable to start. Select FakeMap as the mock location app and grant location permission.</string>
+    <string name="mock_delivery_failed">All test providers rejected location updates. Simulation was stopped safely.</string>
+    <string name="location_permission_required">Location permission is required for the Android location foreground service.</string>
 
-    <string name="title_select_theme">Select Theme</string>
+    <string name="section_map">Map provider</string>
+    <string name="map_provider">Provider</string>
+    <string name="map_provider_auto">Auto (Amap for a mainland target, international map elsewhere)</string>
+    <string name="map_provider_amap">Amap JS API</string>
+    <string name="map_provider_osm">International raster map</string>
+    <string name="amap_key">Amap Web API key</string>
+    <string name="amap_key_hint">Required for the Amap provider; never committed by the project</string>
+    <string name="amap_security_code">Amap JS security code</string>
+    <string name="amap_security_hint">Developer/BYO Key mode only. Production builds must use Amap serviceHost or a compliant native SDK.</string>
+    <string name="osm_tile_hint">https://tile.openstreetmap.org/{z}/{x}/{y}.png</string>
+    <string name="tile_attribution">Raster data attribution text</string>
+    <string name="tile_attribution_url">Attribution license URL (HTTPS)</string>
+    <string name="map_policy_note">The default OpenStreetMap tile server is for light development use only. Configure a licensed tile service for production.</string>
 
-    <string name="xpose_actived">This module is activated!</string>
-    <string name="xpose_not_actived">This module not activated!</string>
-    <string name="xpose_please_active">Please active this module refer to the help!</string>
+    <string name="help">Usage help</string>
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="use_this_location">Use this location</string>
+    <string name="map_loading">Loading map…</string>
+    <string name="map_tap_hint">Tap the map to choose a point. Stored coordinates are always WGS-84.</string>
+    <string name="map_coordinate_format">WGS-84: %1$.6f, %2$.6f</string>
+    <string name="map_amap_credentials_missing">Amap key or JS security code is missing; starting the international map.</string>
+    <string name="map_amap_fallback">Amap was unavailable; switched to the international map.</string>
+    <string name="map_ready_amap">Amap is ready. Tap the map to choose a point.</string>
+    <string name="map_ready_international">International raster map is ready. Tap to choose a point.</string>
+    <string name="map_ready_international_fallback">Amap was unavailable; the international raster map is ready.</string>
+    <string name="map_network_error">Map data is unavailable. Check the network, credentials and service quota.</string>
+    <string name="map_tls_error">The map connection failed certificate validation and was blocked.</string>
+    <string name="map_internal_error">The map configuration could not be created.</string>
+    <string name="map_coordinate_system_error">The map returned an unsupported coordinate system.</string>
+    <string name="map_tile_error">Raster tiles did not respond. Check the configured provider.</string>
+    <string name="invalid_coordinate">Latitude must be -90…90 and longitude -180…180.</string>
+    <string name="invalid_number">Check accuracy, altitude, speed and bearing values.</string>
+    <string name="invalid_target_packages">One or more target package names are invalid or refer to protected system packages.</string>
+    <string name="invalid_tile_url">Tile URL must use HTTPS and contain {z}, {x} and {y}.</string>
+    <string name="invalid_tile_attribution">Provide attribution text and a valid HTTPS license URL for the raster service.</string>
 
-    <string name="tip_already_saved">already saved!</string>
-    <string name="settings">Settings</string>
-    <string name="map_setting">map setting</string>
-    <string name="language_setting">language setting</string>
-    <string name="language_list_title">Select a language</string>
-    <string name="lang_auto">Auto</string>
-    <string name="lang_en">English</string>
-    <string name="lang_ch">Chinese</string>
-    <string name="lang_setting_is_applyed">Language modification has been applied to restart App and take effect</string>
-    <!--    Permissions    -->
-    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
-    <string name="location_permission_denied">This apk requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.</string>
-    <string name="permission_required_toast">Location permission is required for this apk.</string>
+    <string name="notification_channel_name">Location simulation</string>
+    <string name="notification_channel_description">Shows when the Android standard mock provider is active</string>
+    <string name="notification_title">FakeMap simulation is active</string>
+    <string name="notification_text_format">%1$.6f, %2$.6f · tap to configure</string>
 
-    <!--设置界面地图设置相关-->
-    <string name="map_list_title">Select a map provider</string>
-    <string name="baidu_map">Baidu Map</string>
-    <string name="google_map">Google Map</string>
-
-
-    <string name="version_check_failure">Version check faild! Please check network connection.</string>
-    <string name="version_not_new">No new update is available</string>
+    <string name="help_title">FakeMap usage help</string>
+    <string name="help_body">1. Choose a point on the map or enter a WGS-84 coordinate, then save.\n\n2. Standard mode: enable Developer options, choose FakeMap under “Select mock location app”, return here and tap Start simulation. This mode does not require root or Xposed and keeps Android’s official mock marker.\n\n3. Xposed mode: use legacy for original Xposed on Android 6 or a New XSharedPreferences-compatible legacy framework; use modern for libxposed API 101/102. Enable the module, scope FakeMap and each target, enter matching package names, save, then force-stop and reopen targets. Original Xposed on Android 7/8 is not supported.\n\n4. China map: Amap is a developer/BYO Key option for mainland points. Production distribution requires Amap serviceHost or a compliant native SDK. International map: Leaflet uses the configured HTTPS raster service; public OSM has no SLA.\n\n5. Coordinates are stored as WGS-84. Amap points inside mainland China are converted from GCJ-02 before saving.\n\n6. Stop simulation before uninstalling. FakeMap does not fabricate GNSS raw measurements, hide mock-location markers, alter Wi-Fi/cellular state, or bypass integrity and anti-abuse systems. Use only on devices and apps you are authorized to test.</string>
 </resources>

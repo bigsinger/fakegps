@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://webapi.amap.com https://*.amap.com https://*.autonavi.com https://*.alicdn.com; style-src 'self' 'unsafe-inline' https://*.amap.com https://*.autonavi.com; img-src 'self' data: blob: https:; connect-src https:; font-src 'self' data: https:; worker-src blob:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <link rel="stylesheet" href="leaflet/leaflet.css">
+    <style>
+        html, body, #map { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { background: #e8efed; font-family: sans-serif; }
+        .leaflet-control-attribution { font-size: 12px; }
+        #fallback {
+            display: none; position: absolute; z-index: 9999; top: 12px; left: 56px; right: 12px;
+            padding: 10px; color: #17211f; background: rgba(255,255,255,.94); border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="fallback"></div>
+<script src="leaflet/leaflet.js"></script>
+<script>
+(function () {
+    'use strict';
+    var map = null;
+    var marker = null;
+    var options = null;
+    var generation = 0;
+    var watchdog = null;
+
+    function notify(path, parameters) {
+        var query = Object.keys(parameters || {}).map(function (key) {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(String(parameters[key]));
+        }).join('&');
+        window.location.href = 'fakemap://bridge/' + path + (query ? '?' + query : '');
+    }
+
+    function clearWatchdog() {
+        if (watchdog !== null) {
+            window.clearTimeout(watchdog);
+            watchdog = null;
+        }
+    }
+
+    function resetContainer() {
+        clearWatchdog();
+        if (map) {
+            try {
+                if (typeof map.destroy === 'function') map.destroy();
+                else if (typeof map.remove === 'function') map.remove();
+            } catch (ignored) {}
+        }
+        map = null;
+        marker = null;
+        var container = document.getElementById('map');
+        container.innerHTML = '';
+        container.removeAttribute('class');
+        container.removeAttribute('style');
+    }
+
+    function showFallback(message) {
+        var fallback = document.getElementById('fallback');
+        fallback.textContent = message || '';
+        fallback.style.display = message ? 'block' : 'none';
+    }
+
+    function pick(latitude, longitude, coordinateSystem) {
+        notify('picked', {
+            latitude: Number(latitude),
+            longitude: Number(longitude),
+            coordinateSystem: coordinateSystem
+        });
+    }
+
+    function attributionMarkup() {
+        var anchor = document.createElement('a');
+        anchor.href = options.tileAttributionUrl;
+        anchor.rel = 'noopener noreferrer';
+        anchor.textContent = options.tileAttribution;
+        return anchor.outerHTML;
+    }
+
+    function initLeaflet(message, fallbackReason) {
+        generation += 1;
+        var token = generation;
+        resetContainer();
+        showFallback(message);
+        var latitude = typeof options.wgsLatitude === 'number'
+            ? options.wgsLatitude : options.latitude;
+        var longitude = typeof options.wgsLongitude === 'number'
+            ? options.wgsLongitude : options.longitude;
+        map = L.map('map', { zoomControl: true, attributionControl: true })
+            .setView([latitude, longitude], options.zoom || 15);
+        var tiles = L.tileLayer(options.tileUrl, {
+            maxZoom: 19,
+            minZoom: 2,
+            attribution: attributionMarkup()
+        });
+        var successfulTiles = 0;
+        var state = 'pending';
+        function finishReady() {
+            if (generation !== token || state !== 'pending') return;
+            state = 'ready';
+            clearWatchdog();
+            notify('ready', { provider: 'osm', fallback: fallbackReason || '' });
+        }
+        function finishFailed(reason) {
+            if (generation !== token || state !== 'pending') return;
+            state = 'failed';
+            clearWatchdog();
+            showFallback(options.tileErrorMessage || 'Tiles are unavailable.');
+            notify('error', { reason: reason });
+        }
+        tiles.on('tileload', function () {
+            if (generation === token && state === 'pending') successfulTiles += 1;
+        });
+        tiles.on('load', function () {
+            if (successfulTiles > 0) finishReady();
+            else finishFailed('tile-unavailable');
+        });
+        tiles.addTo(map);
+        marker = L.circleMarker([latitude, longitude], {
+            radius: 9,
+            color: '#ffffff',
+            weight: 3,
+            fillColor: '#e36f22',
+            fillOpacity: 1
+        }).addTo(map);
+        map.on('click', function (event) {
+            marker.setLatLng(event.latlng);
+            pick(event.latlng.lat, event.latlng.lng, 'wgs84');
+        });
+        watchdog = window.setTimeout(function () {
+            finishFailed('tile-timeout');
+        }, 12000);
+    }
+
+    function fallbackFromAmap(token, reason) {
+        if (generation !== token) return;
+        initLeaflet(options.fallbackMessage || 'Amap unavailable.', reason);
+    }
+
+    function initAmap(token) {
+        if (generation !== token) return;
+        resetContainer();
+        var ready = false;
+        try {
+            map = new AMap.Map('map', {
+                viewMode: '2D',
+                zoom: options.zoom || 15,
+                center: [options.longitude, options.latitude],
+                languageCode: options.amapLanguageCode || 'en',
+                logoLanguage: options.amapLogoLanguage || 'en'
+            });
+            marker = new AMap.Marker({
+                position: [options.longitude, options.latitude],
+                anchor: 'bottom-center'
+            });
+            map.add(marker);
+            map.on('click', function (event) {
+                marker.setPosition(event.lnglat);
+                pick(event.lnglat.getLat(), event.lnglat.getLng(), 'gcj02');
+            });
+            map.on('complete', function () {
+                if (generation !== token || ready) return;
+                ready = true;
+                clearWatchdog();
+                notify('ready', { provider: 'amap', fallback: '' });
+            });
+            watchdog = window.setTimeout(function () {
+                if (!ready) fallbackFromAmap(token, 'amap-timeout');
+            }, 12000);
+        } catch (ignored) {
+            fallbackFromAmap(token, 'amap-initialize');
+        }
+    }
+
+    function loadAmap() {
+        generation += 1;
+        var token = generation;
+        window._AMapSecurityConfig = { securityJsCode: options.amapSecurity };
+        var script = document.createElement('script');
+        script.src = 'https://webapi.amap.com/maps?v=2.0&key=' + encodeURIComponent(options.amapKey);
+        script.async = true;
+        script.onload = function () { initAmap(token); };
+        script.onerror = function () { fallbackFromAmap(token, 'amap-script'); };
+        document.head.appendChild(script);
+        watchdog = window.setTimeout(function () {
+            fallbackFromAmap(token, 'amap-script-timeout');
+        }, 12000);
+    }
+
+    window.FakeMap = {
+        init: function (initialOptions) {
+            options = initialOptions;
+            document.documentElement.lang = options.languageTag || 'en';
+            if (options.provider === 'amap' && options.amapKey && options.amapSecurity) {
+                loadAmap();
+            } else {
+                initLeaflet('', '');
+            }
+        }
+    };
+})();
+</script>
+</body>
+</html>

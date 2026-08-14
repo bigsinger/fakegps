@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="setting_lang">
-        <item>@string/lang_auto</item>
-        <item>@string/lang_en</item>
-        <item>@string/lang_ch</item>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@array/xposed_default_scope">
+    <string-array name="map_provider_labels">
+        <item>@string/map_provider_auto</item>
+        <item>@string/map_provider_amap</item>
+        <item>@string/map_provider_osm</item>
     </string-array>
-    <string-array name="setting_mpas">
-        <item>@string/baidu_map</item>
-        <item>@string/google_map</item>
+    <string-array name="xposed_default_scope" translatable="false">
+        <item>com.bigsing.fakemap</item>
     </string-array>
 </resources>

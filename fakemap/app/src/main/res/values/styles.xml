@@ -1,62 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="AppTheme" parent="MyThemeBlue">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
+    <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:colorAccent">@color/color_accent</item>
+        <item name="android:navigationBarColor">@color/color_primary_dark</item>
+        <item name="android:statusBarColor">@color/color_primary_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/color_background</item>
     </style>
 
-    <!-- 蓝色为主色调 -->
-    <style name="MyThemeBlue" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <!--正常状态下字体颜色和icon颜色-->
-        <item name="android:textColorPrimary">@color/white</item>
-
+    <style name="SectionTitle">
+        <item name="android:textColor">@color/color_primary_dark</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">@dimen/section_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/field_spacing</item>
     </style>
 
-    <style name="MyThemeGray" parent="Base.Theme.AppCompat.Dialog.Alert"></style>
-
-    <!---===================================================================-->
-
-    <style name="horizontal_linearlayout">
-        <!--该样式用于水平布局-->
-        <item name="android:orientation">horizontal</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="FieldLabel">
+        <item name="android:textColor">@color/color_text_secondary</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_marginTop">@dimen/field_spacing</item>
     </style>
 
-    <style name="vertical_linearlayout">
-        <!--该样式用于垂直布局-->
-        <item name="android:orientation">vertical</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="PrimaryButton" parent="android:style/Widget.Material.Button.Colored">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="relativelayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="SecondaryButton" parent="android:style/Widget.Material.Button">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
-
-    <style name="grayTextView">
-        <item name="android:layout_width">90dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/darker_gray</item>
-    </style>
-
-    <style name="blackEditText">
-        <item name="android:inputType">textNoSuggestions</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-
-    <style name="setting_style" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:focusable">false</item>
-        <item name="android:textColor">#ff000000</item> <!-- 字体颜色 -->
-        <item name="android:colorBackgroundCacheHint">#00000000</item> <!-- 背景缓存色透明，避免拖动全黑 -->
-        <item name="android:windowNoTitle">false</item>
-    </style>
-
 </resources>

@@ -1,0 +1,16 @@
+*.md text eol=lf
+/.gitattributes text eol=lf
+*.gradle text eol=lf
+*.properties text eol=lf
+*.prop text eol=lf
+*.list text eol=lf
+*.java text eol=lf
+*.xml text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.pro text eol=lf
+*.bat text eol=crlf
+.gitignore text eol=lf
+gradlew text eol=lf
+app/src/**/assets/xposed_init text eol=lf
