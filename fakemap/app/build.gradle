@@ -89,9 +89,25 @@ android {
 
 androidComponents {
     onVariants(selector().withBuildType('release')) { variant ->
+        def apkFileName =
+                "FakeMap-release-${variant.outputs.first().versionName.get()}-${variant.flavorName}.apk"
         variant.outputs.each { output ->
-            output.outputFileName.set(
-                    "FakeMap-release-${output.versionName.get()}-${variant.flavorName}.apk")
+            output.outputFileName.set(apkFileName)
+        }
+
+        def capitalizedVariantName = variant.name.capitalize()
+        def exportTask = tasks.register("export${capitalizedVariantName}Apk", Copy) {
+            dependsOn("package${capitalizedVariantName}")
+            from(layout.buildDirectory.dir(
+                    "outputs/apk/${variant.flavorName}/release")) {
+                include(apkFileName)
+            }
+            into(rootProject.layout.projectDirectory.dir('release'))
+        }
+        tasks.matching {
+            it.name == "assemble${capitalizedVariantName}"
+        }.configureEach {
+            dependsOn(exportTask)
         }
     }
 }
