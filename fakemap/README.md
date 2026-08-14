@@ -49,10 +49,10 @@ FakeMap 是一个用于 Android 开发、自动化测试和隐私测试的位置
 .\gradlew.bat clean test lintLegacyRelease lintModernRelease assembleLegacyRelease assembleModernRelease
 ```
 
-构建完成后，发布产物会自动复制到项目根目录的 `release`：
+构建完成后，发布产物会自动复制到 Git 仓库根目录的 `release`：
 
-- `release/FakeMap-release-2.0.0-legacy.apk`
-- `release/FakeMap-release-2.0.0-modern.apk`
+- `../release/FakeMap-release-2.0.0-legacy.apk`
+- `../release/FakeMap-release-2.0.0-modern.apk`
 
 详细环境、签名和验证方式见[构建与测试](docs/构建与测试.md)。仓库内签名只用于测试，不得用于正式发布。
 

@@ -102,7 +102,7 @@ androidComponents {
                     "outputs/apk/${variant.flavorName}/release")) {
                 include(apkFileName)
             }
-            into(rootProject.layout.projectDirectory.dir('release'))
+            into(rootProject.layout.projectDirectory.dir('../release'))
         }
         tasks.matching {
             it.name == "assemble${capitalizedVariantName}"
